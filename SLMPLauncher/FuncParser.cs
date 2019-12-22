@@ -112,7 +112,7 @@ namespace SLMPLauncher
                 }
                 else if (File.Exists(path))
                 {
-                    FuncMisc.appendToFile(path, Environment.NewLine + "[" + section + "]" + Environment.NewLine + key + "=" + value, null, false);
+                    FuncMisc.appendToFile(path, Environment.NewLine + "[" + section + "]" + Environment.NewLine + key + "=" + value);
                 }
             }
             if (readyToWrite)

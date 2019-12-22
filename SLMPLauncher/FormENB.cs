@@ -165,7 +165,7 @@ namespace SLMPLauncher
                 FuncParser.iniWrite(FormMain.pathLauncherINI, "ENB", "LastPreset", listBox1.SelectedItem.ToString());
                 FuncParser.iniWrite(FormMain.pathENBLocalINI, "MEMORY", "VideoMemorySizeMb", FuncParser.stringRead(FormMain.pathLauncherINI, "ENB", "MemorySizeMb"));
                 refreshAllValue();
-                if (listBox1.SelectedItem.ToString().ToLower().Contains("boost") || listBox1.SelectedItem.ToString().ToLower().Contains("lite"))
+                if (listBox1.SelectedItem.ToString().IndexOf("boost", StringComparison.OrdinalIgnoreCase) >= 0 || listBox1.SelectedItem.ToString().IndexOf("lite", StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     FuncMisc.unpackRAR(FormMain.pathSystemFolder + "ENB Vision.rar");
                 }

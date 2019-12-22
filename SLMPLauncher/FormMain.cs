@@ -85,7 +85,6 @@ namespace SLMPLauncher
         public Bitmap BMbuttonlogoGlow;
         public Bitmap BMbuttonlogoPressed;
         FormWidget settingsWidget = null;
-        List<string> ignoreList = new List<string>();
 
         public FormMain()
         {
@@ -492,52 +491,34 @@ namespace SLMPLauncher
             DialogResult result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                if (openFileDialog1.FileName.ToLower().Contains(pathGameFolder.ToLower()))
+                if (openFileDialog1.FileName.IndexOf(pathGameFolder, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
+                    List<string> ignoreList = new List<string>();
+                    ignoreList.AddRange(File.ReadAllLines(pathIgnoreINI));
                     foreach (string line in openFileDialog1.FileNames)
                     {
-                        ignoreList.Add(line.Remove(0, pathGameFolder.Length));
+                        string file = line.Remove(0, pathGameFolder.Length);
+                        if (!ignoreList.Exists(s => s.Equals(file, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            ignoreList.Add(file);
+                        }
                     }
-                    FuncMisc.appendToFile(pathIgnoreINI, null, ignoreList, true);
+                    string path = Path.GetDirectoryName(openFileDialog1.FileName);
+                    while (path.Length > pathGameFolder.Length)
+                    {
+                        string folder = path.Remove(0, pathGameFolder.Length);
+                        if (!ignoreList.Exists(s => s.Equals(folder, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            ignoreList.Add(folder);
+                        }
+                        path = Path.GetDirectoryName(path);
+                    }
+                    FuncMisc.writeToFile(pathIgnoreINI, ignoreList);
                     ignoreList.Clear();
                 }
                 else
                 {
                     MessageBox.Show(textNotInDirectory);
-                }
-            }
-        }
-        private void button_AddIgnoreFolder_Click(object sender, EventArgs e)
-        {
-            label1.Focus();
-            folderBrowserDialog1.SelectedPath = pathGameFolder;
-            DialogResult result = folderBrowserDialog1.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                if (folderBrowserDialog1.SelectedPath.ToLower().Contains(pathGameFolder.ToLower()))
-                {
-                    addToIgnoreList(folderBrowserDialog1.SelectedPath);
-                    FuncMisc.appendToFile(pathIgnoreINI, null, ignoreList, true);
-                    ignoreList.Clear();
-                }
-                else
-                {
-                    MessageBox.Show(textNotInDirectory);
-                }
-            }
-        }
-        private void addToIgnoreList(string path)
-        {
-            if (Directory.Exists(path))
-            {
-                ignoreList.Add(path.Remove(0, pathGameFolder.Length));
-                foreach (string line in Directory.EnumerateFiles(path))
-                {
-                    ignoreList.Add(line.Remove(0, pathGameFolder.Length));
-                }
-                foreach (string line in Directory.EnumerateDirectories(path))
-                {
-                    addToIgnoreList(line);
                 }
             }
         }
@@ -740,7 +721,6 @@ namespace SLMPLauncher
             textUnPackFNIS = "Распаковать стандартные файлы FNIS из архива:" + Environment.NewLine + pathFNISRAR;
             textUseStandart = "Будут использованы стандартные шаблоны настроек т.к. не найден файл: " + Environment.NewLine;
             toolTip1.SetToolTip(button_AddIgnoreFiles, "Добавление файла(ов) в шаблон игнор листа.");
-            toolTip1.SetToolTip(button_AddIgnoreFolder, "Добавление папки в шаблон игнор листа.");
             toolTip1.SetToolTip(button_ClearDirectory, "Удаляет \"чужие\" файлы. В т.ч. распакованные программы.");
             toolTip1.SetToolTip(button_DSR, "Патчер Dual Sheath Redux. Применять после изменения модов содержащих оружие.");
             toolTip1.SetToolTip(button_ENB, "Меню управления ENB с выбором различных пресетов.");
@@ -786,7 +766,6 @@ namespace SLMPLauncher
             textUnPackFNIS = "Unpack the standard FNIS files from the archive:" + Environment.NewLine + pathFNISRAR;
             textUseStandart = "Standard templates of settings will be used because file not found: " + Environment.NewLine;
             toolTip1.SetToolTip(button_AddIgnoreFiles, "Adding a file(s) to the ignore list template.");
-            toolTip1.SetToolTip(button_AddIgnoreFolder, "Adding a folder to the ignore list template.");
             toolTip1.SetToolTip(button_ClearDirectory, "Delete \"strangers\" files. Including unpacked programs.");
             toolTip1.SetToolTip(button_DSR, "Patcher Dual Sheath Redux. Apply after the change in the mods containing the weapons.");
             toolTip1.SetToolTip(button_ENB, "The ENB control menu with a selection of different presets.");
@@ -877,7 +856,6 @@ namespace SLMPLauncher
             button_GameFolder.BackgroundImage = BMbuttonFull;
             button_ResetSettings.BackgroundImage = BMbuttonFull;
             button_ClearDirectory.BackgroundImage = BMbuttonClear;
-            button_AddIgnoreFolder.BackgroundImage = BMbuttonOne;
             button_AddIgnoreFiles.BackgroundImage = BMbuttonOne;
             button_Mods.BackgroundImage = BMbuttonHalf;
             button_MyDocs.BackgroundImage = BMbuttonFull;

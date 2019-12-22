@@ -3,8 +3,7 @@
 	partial class FormMain
 	{
 		private System.ComponentModel.IContainer components = null;
-		private System.Windows.Forms.Button button_AddIgnoreFiles;
-		private System.Windows.Forms.Button button_AddIgnoreFolder;
+        private System.Windows.Forms.Button button_AddIgnoreFiles;
 		private System.Windows.Forms.Button button_ClearDirectory;
 		private System.Windows.Forms.Button button_Close;
 		private System.Windows.Forms.Button button_DSR;
@@ -41,7 +40,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.button_AddIgnoreFiles = new System.Windows.Forms.Button();
-            this.button_AddIgnoreFolder = new System.Windows.Forms.Button();
             this.button_ClearDirectory = new System.Windows.Forms.Button();
             this.button_Close = new System.Windows.Forms.Button();
             this.button_DSR = new System.Windows.Forms.Button();
@@ -75,7 +73,7 @@
             this.button_AddIgnoreFiles.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlText;
             this.button_AddIgnoreFiles.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_AddIgnoreFiles.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button_AddIgnoreFiles.Location = new System.Drawing.Point(417, 84);
+            this.button_AddIgnoreFiles.Location = new System.Drawing.Point(448, 84);
             this.button_AddIgnoreFiles.Name = "button_AddIgnoreFiles";
             this.button_AddIgnoreFiles.Size = new System.Drawing.Size(28, 30);
             this.button_AddIgnoreFiles.TabIndex = 12;
@@ -84,26 +82,6 @@
             this.button_AddIgnoreFiles.Click += new System.EventHandler(this.button_AddIgnoreFiles_Click);
             this.button_AddIgnoreFiles.MouseEnter += new System.EventHandler(this.button_Add_MouseEnter);
             this.button_AddIgnoreFiles.MouseLeave += new System.EventHandler(this.button_Add_MouseLeave);
-            // 
-            // button_AddIgnoreFolder
-            // 
-            this.button_AddIgnoreFolder.BackgroundImage = global::SLMPLauncher.Properties.Resources._1_buttonOne;
-            this.button_AddIgnoreFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button_AddIgnoreFolder.FlatAppearance.BorderColor = System.Drawing.SystemColors.ControlText;
-            this.button_AddIgnoreFolder.FlatAppearance.BorderSize = 0;
-            this.button_AddIgnoreFolder.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.ControlText;
-            this.button_AddIgnoreFolder.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlText;
-            this.button_AddIgnoreFolder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_AddIgnoreFolder.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button_AddIgnoreFolder.Location = new System.Drawing.Point(448, 84);
-            this.button_AddIgnoreFolder.Name = "button_AddIgnoreFolder";
-            this.button_AddIgnoreFolder.Size = new System.Drawing.Size(28, 30);
-            this.button_AddIgnoreFolder.TabIndex = 13;
-            this.button_AddIgnoreFolder.Text = "D";
-            this.button_AddIgnoreFolder.UseVisualStyleBackColor = false;
-            this.button_AddIgnoreFolder.Click += new System.EventHandler(this.button_AddIgnoreFolder_Click);
-            this.button_AddIgnoreFolder.MouseEnter += new System.EventHandler(this.button_Add_MouseEnter);
-            this.button_AddIgnoreFolder.MouseLeave += new System.EventHandler(this.button_Add_MouseLeave);
             // 
             // button_ClearDirectory
             // 
@@ -117,7 +95,7 @@
             this.button_ClearDirectory.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button_ClearDirectory.Location = new System.Drawing.Point(298, 84);
             this.button_ClearDirectory.Name = "button_ClearDirectory";
-            this.button_ClearDirectory.Size = new System.Drawing.Size(116, 30);
+            this.button_ClearDirectory.Size = new System.Drawing.Size(144, 30);
             this.button_ClearDirectory.TabIndex = 11;
             this.button_ClearDirectory.Text = "Очистка";
             this.button_ClearDirectory.UseVisualStyleBackColor = false;
@@ -459,7 +437,6 @@
             this.ClientSize = new System.Drawing.Size(488, 234);
             this.ControlBox = false;
             this.Controls.Add(this.button_AddIgnoreFiles);
-            this.Controls.Add(this.button_AddIgnoreFolder);
             this.Controls.Add(this.button_ClearDirectory);
             this.Controls.Add(this.button_Close);
             this.Controls.Add(this.button_DSR);

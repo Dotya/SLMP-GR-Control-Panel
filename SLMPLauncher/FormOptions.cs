@@ -269,7 +269,7 @@ namespace SLMPLauncher
                 }
                 else if (!ignoreNames.Exists(s => s.Equals(e.Item.Text, StringComparison.OrdinalIgnoreCase)))
                 {
-                    uncheckItem(e.Item.Text.ToLower());
+                    uncheckItem(e.Item.Text);
                 }
                 else
                 {
@@ -317,7 +317,7 @@ namespace SLMPLauncher
             {
                 item.ForeColor = Color.Red;
             }
-            else if (item.Text.ToLower().EndsWith(".esm") || FuncParser.checkESM(FormMain.pathDataFolder + item.Text))
+            else if (item.Text.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) || FuncParser.checkESM(FormMain.pathDataFolder + item.Text))
             {
                 item.ForeColor = Color.Blue;
             }
@@ -339,7 +339,7 @@ namespace SLMPLauncher
                     if (string.Equals(line, item, StringComparison.OrdinalIgnoreCase))
                     {
                         listView1.Items[i].Checked = false;
-                        uncheckItem(listView1.Items[i].Text.ToLower());
+                        uncheckItem(listView1.Items[i].Text);
                     }
                 }
             }
@@ -451,7 +451,7 @@ namespace SLMPLauncher
             item.SubItems.Add("");
             if (!listView1.Items.Contains(item))
             {
-                if (line.ToLower().EndsWith(".esm") || FuncParser.checkESM(FormMain.pathDataFolder + line))
+                if (line.EndsWith(".esm", StringComparison.OrdinalIgnoreCase) || FuncParser.checkESM(FormMain.pathDataFolder + line))
                 {
                     listView1.Items.Insert(nextESMIndex, item);
                     nextESMIndex++;

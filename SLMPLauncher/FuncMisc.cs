@@ -17,7 +17,7 @@ namespace SLMPLauncher
                 button.Enabled = true;
                 string readString = FuncParser.stringRead(file, section, parameter);
                 bool toggle = false;
-                toggle = readString != null && (readString == value || readString == "1" || readString.ToLower() == "true");
+                toggle = readString != null && (readString == value || readString == "1" || string.Equals(readString, "true", StringComparison.OrdinalIgnoreCase));
                 toggle = invert ? !toggle : toggle;
                 if (toggle)
                 {
@@ -196,18 +196,11 @@ namespace SLMPLauncher
             }
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
-        public static void appendToFile(string path, string singleline, List<string> list, bool islist)
+        public static void appendToFile(string path, string line)
         {
             try
             {
-                if (islist)
-                {
-                    File.AppendAllLines(path, list, new UTF8Encoding(false));
-                }
-                else
-                {
-                    File.AppendAllText(path, singleline + Environment.NewLine, new UTF8Encoding(false));
-                }
+                File.AppendAllText(path, line + Environment.NewLine, new UTF8Encoding(false));
             }
             catch
             {

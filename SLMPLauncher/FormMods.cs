@@ -63,7 +63,7 @@ namespace SLMPLauncher
             if (listBox1.SelectedIndex != -1)
             {
                 fileUnpack(listBox1.SelectedItem.ToString());
-                if (listBox1.SelectedItem.ToString().ToLower().Contains("frostfall") || listBox1.SelectedItem.ToString().ToLower().Contains("disablefasttravel"))
+                if (listBox1.SelectedItem.ToString().IndexOf("frostfall", StringComparison.OrdinalIgnoreCase) >= 0 || listBox1.SelectedItem.ToString().IndexOf("disablefasttravel", StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     FuncMisc.wideScreenMods();
                 }
