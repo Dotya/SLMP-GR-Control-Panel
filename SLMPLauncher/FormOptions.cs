@@ -13,7 +13,6 @@ namespace SLMPLauncher
         public static List<int> screenListW = new List<int>();
         public static List<int> screenListH = new List<int>();
         List<string> ignoreNames = new List<string>() { "Skyrim.esm", "Update.esm", "Dawnguard.esm", "HearthFires.esm", "Dragonborn.esm" };
-        static string pathDataFolder = FormMain.pathGameFolder + @"Data\";
         string pathToPlugins = FormMain.pathAppData + "Plugins.txt";
         string pathToLoader = FormMain.pathAppData + "LoadOrder.txt";
         string textDateChange = "Не удалось изменить дату изменения файла: ";
@@ -23,7 +22,7 @@ namespace SLMPLauncher
         string textRedateMods = "Массовое изменение даты изменения файлов по возрастанию.";
         string textShadowResolution = "iShadowMapResolution - \"тяжелый\" параметр теней.";
         string textZFighting = "Уменьшает мерцание гор вдали.";
-        DateTime lastWriteData = Directory.GetLastWriteTime(pathDataFolder);
+        DateTime lastWriteData = Directory.GetLastWriteTime(FormMain.pathDataFolder);
         ListViewItem itemStartMove = null;
         int nextESMIndex = 0;
         bool blockRefreshList = true;
@@ -77,12 +76,12 @@ namespace SLMPLauncher
         }
         private void timer2_Tick(object sender, EventArgs e)
         {
-            if (lastWriteData != Directory.GetLastWriteTime(pathDataFolder))
+            if (lastWriteData != Directory.GetLastWriteTime(FormMain.pathDataFolder))
             {
                 timer2.Enabled = false;
                 refreshModsList();
                 timer2.Enabled = true;
-                lastWriteData = Directory.GetLastWriteTime(pathDataFolder);
+                lastWriteData = Directory.GetLastWriteTime(FormMain.pathDataFolder);
             }
         }
         private void langTranslateEN()
@@ -195,7 +194,7 @@ namespace SLMPLauncher
         private void listView1_MouseDown(object sender, MouseEventArgs e)
         {
             itemStartMove = GetItemFromPoint(listView1, Cursor.Position);
-            if (!blockRefreshList && itemStartMove != null && itemStartMove.Text != "Skyrim.esm" && itemStartMove.Text != "Update.esm" && itemStartMove.Text != "Dawnguard.esm" && itemStartMove.Text != "HearthFires.esm" && itemStartMove.Text != "Dragonborn.esm")
+            if (!blockRefreshList && itemStartMove != null && !ignoreNames.Exists(s => s.Equals(itemStartMove.Text, StringComparison.OrdinalIgnoreCase)))
             {
                 startMoveItem = true;
                 timer1.Enabled = true;
@@ -254,7 +253,7 @@ namespace SLMPLauncher
         private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             listBox1.Items.Clear();
-            listBox1.Items.AddRange(FuncParser.parserESPESM(pathDataFolder + e.Item.Text).ToArray());
+            listBox1.Items.AddRange(FuncParser.parserESPESM(FormMain.pathDataFolder + e.Item.Text).ToArray());
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         private void listView1_ItemChecked(object sender, ItemCheckedEventArgs e)
@@ -290,7 +289,7 @@ namespace SLMPLauncher
             int lastIndex = -1;
             bool goodSort = false;
             bool hasMasters = false;
-            foreach (string line in FuncParser.parserESPESM(pathDataFolder + item.Text))
+            foreach (string line in FuncParser.parserESPESM(FormMain.pathDataFolder + item.Text))
             {
                 hasMasters = true;
                 ListViewItem findItem = listView1.FindItemWithText(line);
@@ -318,7 +317,7 @@ namespace SLMPLauncher
             {
                 item.ForeColor = Color.Red;
             }
-            else if (item.Text.ToLower().EndsWith(".esm") || FuncParser.checkESM(pathDataFolder + item.Text))
+            else if (item.Text.ToLower().EndsWith(".esm") || FuncParser.checkESM(FormMain.pathDataFolder + item.Text))
             {
                 item.ForeColor = Color.Blue;
             }
@@ -335,7 +334,7 @@ namespace SLMPLauncher
         {
             for (int i = 0; i < listView1.Items.Count; i++)
             {
-                foreach (string line in FuncParser.parserESPESM(pathDataFolder + listView1.Items[i].Text))
+                foreach (string line in FuncParser.parserESPESM(FormMain.pathDataFolder + listView1.Items[i].Text))
                 {
                     if (string.Equals(line, item, StringComparison.OrdinalIgnoreCase))
                     {
@@ -347,10 +346,10 @@ namespace SLMPLauncher
         }
         private void scanAllMods()
         {
-            foreach (ListViewItem item in listView1.CheckedItems)
+            foreach (ListViewItem item in listView1.Items)
             {
                 goodAllMasters = true;
-                checkItem(item, true);
+                checkItem(item, item.Checked);
             }
             setFileID();
         }
@@ -376,7 +375,7 @@ namespace SLMPLauncher
             listView1.Items.Clear();
             listBox1.Items.Clear();
             nextESMIndex = 0;
-            if (File.Exists(pathToPlugins) && File.Exists(pathToLoader) && Directory.Exists(pathDataFolder))
+            if (File.Exists(pathToPlugins) && File.Exists(pathToLoader) && Directory.Exists(FormMain.pathDataFolder))
             {
                 List<string> pluginsList = new List<string>(File.ReadAllLines(pathToPlugins));
                 List<string> loaderList = new List<string>(File.ReadAllLines(pathToLoader));
@@ -396,7 +395,7 @@ namespace SLMPLauncher
                     }
                 }
                 List<string> dataESFiles = new List<string>();
-                foreach (string line in Directory.EnumerateFiles(pathDataFolder, "*.esm"))
+                foreach (string line in Directory.EnumerateFiles(FormMain.pathDataFolder, "*.esm"))
                 {
                     string file = Path.GetFileName(line);
                     if (!ignoreNames.Exists(s => s.Equals(file, StringComparison.OrdinalIgnoreCase)))
@@ -404,13 +403,13 @@ namespace SLMPLauncher
                         dataESFiles.Add(file);
                     }
                 }
-                foreach (string line in Directory.EnumerateFiles(pathDataFolder, "*.esp"))
+                foreach (string line in Directory.EnumerateFiles(FormMain.pathDataFolder, "*.esp"))
                 {
                     dataESFiles.Add(Path.GetFileName(line));
                 }
                 foreach (string line in ignoreNames)
                 {
-                    if (File.Exists(pathDataFolder + line))
+                    if (File.Exists(FormMain.pathDataFolder + line))
                     {
                         addToListView(line, true);
                     }
@@ -421,11 +420,11 @@ namespace SLMPLauncher
                     {
                         if (pluginsList.Exists(s => s.Equals(line, StringComparison.OrdinalIgnoreCase)))
                         {
-                            addToListView(Path.GetFileName(pathDataFolder + line), true);
+                            addToListView(Path.GetFileName(FormMain.pathDataFolder + line), true);
                         }
                         else
                         {
-                            addToListView(Path.GetFileName(pathDataFolder + line), false);
+                            addToListView(Path.GetFileName(FormMain.pathDataFolder + line), false);
                         }
                     }
                 }
@@ -452,7 +451,7 @@ namespace SLMPLauncher
             item.SubItems.Add("");
             if (!listView1.Items.Contains(item))
             {
-                if (line.ToLower().EndsWith(".esm") || FuncParser.checkESM(pathDataFolder + line))
+                if (line.ToLower().EndsWith(".esm") || FuncParser.checkESM(FormMain.pathDataFolder + line))
                 {
                     listView1.Items.Insert(nextESMIndex, item);
                     nextESMIndex++;
@@ -518,7 +517,7 @@ namespace SLMPLauncher
             if (listView1.Items.Count > 0)
             {
                 DateTime dt = new DateTime(2019, 1, 1, 12, 0, 0, DateTimeKind.Local);
-                foreach (string line in Directory.EnumerateFiles(pathDataFolder, "*.bsa"))
+                foreach (string line in Directory.EnumerateFiles(FormMain.pathDataFolder, "*.bsa"))
                 {
                     try
                     {
@@ -533,11 +532,11 @@ namespace SLMPLauncher
                 {
                     try
                     {
-                        File.SetLastWriteTime(pathDataFolder + item.Text, dt);
+                        File.SetLastWriteTime(FormMain.pathDataFolder + item.Text, dt);
                     }
                     catch
                     {
-                        MessageBox.Show(textDateChange + pathDataFolder + item.Text);
+                        MessageBox.Show(textDateChange + FormMain.pathDataFolder + item.Text);
                     }
                     dt = dt.AddMinutes(1);
                 }

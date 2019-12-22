@@ -96,21 +96,13 @@ namespace SLMPLauncher
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         public static string pathAddSlash(string path)
         {
-            if (path.EndsWith(@"/") || path.EndsWith(@"\"))
+            if (path.EndsWith(@"\"))
             {
                 return path;
-            }
-            else if (path.Contains(@"/"))
-            {
-                return path + @"/";
-            }
-            else if (path.Contains(@"\"))
-            {
-                return path + @"\";
             }
             else
             {
-                return path;
+                return path + @"\";
             }
         }
     }

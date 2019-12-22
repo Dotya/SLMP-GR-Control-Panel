@@ -130,7 +130,7 @@ namespace SLMPLauncher
                 FuncMisc.refreshButton(button_EAA, "", "", "", null, false);
                 FuncMisc.refreshButton(button_SAA, "", "", "", null, false);
                 FuncMisc.refreshButton(button_TAA, "", "", "", null, false);
-                if (!File.Exists(FormMain.pathGameFolder + @"Data\GameText9.bsa"))
+                if (!File.Exists(FormMain.pathDataFolder + @"GameText9.bsa"))
                 {
                     FuncMisc.unpackRAR(FormMain.pathSystemFolder + "GameText9.rar");
                 }
@@ -142,7 +142,7 @@ namespace SLMPLauncher
                 refreshEAA();
                 refreshSAA();
                 refreshTAA();
-                FuncFiles.deleteAny(FormMain.pathGameFolder + @"Data\GameText9.bsa");
+                FuncFiles.deleteAny(FormMain.pathDataFolder + @"GameText9.bsa");
             }
             refreshAF();
             refreshAutoDetect();

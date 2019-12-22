@@ -15,6 +15,7 @@ namespace SLMPLauncher
         public static string pathLauncherExecuting = Process.GetCurrentProcess().MainModule.FileName;
         public static string pathLauncherFolder = FuncFiles.pathAddSlash(Path.GetDirectoryName(pathLauncherExecuting));
         public static string pathGameFolder = FuncFiles.pathAddSlash(Path.GetFullPath(pathLauncherFolder + ".."));
+        public static string pathDataFolder = pathGameFolder + @"Data\";
         public static string pathENBFolder = pathLauncherFolder + @"ENB\";
         public static string pathModsFolder = pathLauncherFolder + @"Mods\";
         public static string pathSystemFolder = pathLauncherFolder + @"System\";
@@ -48,8 +49,8 @@ namespace SLMPLauncher
         public static bool windgetOpen = false;
         public static FontStyle customFontStyle = FontStyle.Regular;
         public static string pathFNISRAR = pathSystemFolder + "FNIS.rar";
-        string pathFNIS = pathGameFolder + @"Data\Tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe";
-        string pathDSR = pathGameFolder + @"Data\SkyProc Patchers\Dual Sheath Redux Patch\Dual Sheath Redux Patch.jar";
+        string pathFNIS = pathDataFolder + @"Tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe";
+        string pathDSR = pathDataFolder + @"SkyProc Patchers\Dual Sheath Redux Patch\Dual Sheath Redux Patch.jar";
         string pathHelp = pathProgramFilesFolder + "SLMP-GR Help.chm";
         string pathWB = pathProgramFilesFolder + @"Wrye Bash\Wrye Bash.exe";
         string registryPath = @"SOFTWARE\Bethesda Softworks\Skyrim";
@@ -90,7 +91,7 @@ namespace SLMPLauncher
         {
             InitializeComponent();
             Directory.SetCurrentDirectory(pathLauncherFolder);
-            if (!Directory.Exists(pathGameFolder + "Data"))
+            if (!Directory.Exists(pathDataFolder))
             {
                 MessageBox.Show(@"Панель Управления должна располагаться по адресу: Директория Игры\Любая Папка\" + Environment.NewLine + Environment.NewLine + @"The Control Panel should be located at: Game Directory\Any Folder\");
                 Environment.Exit(0);
@@ -575,7 +576,7 @@ namespace SLMPLauncher
         private void button_Options_Click(object sender, EventArgs e)
         {
             label1.Focus();
-            if (File.Exists(pathSkyrimINI) && File.Exists(pathSkyrimPrefsINI) && File.Exists(pathAppData + "Plugins.txt") && File.Exists(pathAppData + "LoadOrder.txt") && Directory.Exists(pathGameFolder + "Data"))
+            if (File.Exists(pathSkyrimINI) && File.Exists(pathSkyrimPrefsINI) && File.Exists(pathAppData + "Plugins.txt") && File.Exists(pathAppData + "LoadOrder.txt") && Directory.Exists(pathDataFolder))
             {
                 var form = new FormOptions();
                 form.ShowDialog();
