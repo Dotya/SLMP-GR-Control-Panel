@@ -77,7 +77,6 @@ namespace SLMPLauncher
                 @"data\enhancedlightsfx.esp",
                 @"data\eyeshairs.bsa",
                 @"data\eyeshairs.esp",
-                @"data\fakedirectlightremove.esp",
                 @"data\falskaar.bsa",
                 @"data\falskaar.esp",
                 @"data\florarespawnfix.bsa",
@@ -185,6 +184,7 @@ namespace SLMPLauncher
                 @"data\quests markers.esp",
                 @"data\racemenu.bsa",
                 @"data\racemenu.esp",
+                @"data\removefakedirectlight.esp",
                 @"data\rmoverlays.bsa",
                 @"data\rmoverlays.esp",
                 @"data\scripts",
@@ -229,6 +229,7 @@ namespace SLMPLauncher
                 @"data\skse\plugins\skse_enhancedcamera.dll",
                 @"data\skse\plugins\skse_enhancedcamera.ini",
                 @"data\skse\plugins\skse_russian_helper.dll",
+				@"data\skse\plugins\srtcrashfix.dll",
                 @"data\skse\plugins\skyrimsouls.dll",
                 @"data\skse\plugins\skyrimsouls.ini",
                 @"data\skse\plugins\storageutil.dll",
@@ -273,6 +274,7 @@ namespace SLMPLauncher
                 @"data\update.esm",
                 @"data\wearable lantern.bsa",
                 @"data\wearable lantern.esp",
+                @"data\weather svwi.esp",
                 @"data\wondersofweather.bsa",
                 @"data\wondersofweather.esp",
                 @"data\wyrmstooth.bsa",
@@ -353,14 +355,14 @@ namespace SLMPLauncher
             {
                 foreach (string line in Directory.EnumerateFiles(path))
                 {
-                    if (!ignoreList.Exists(s => s.Equals(line.Remove(0, FormMain.pathGameFolder.Length), StringComparison.OrdinalIgnoreCase)))
+                    if (!ignoreList.Exists(s => s.Equals(line.Remove(0, FormMain.gameDirLength), StringComparison.OrdinalIgnoreCase)))
                     {
                         FuncFiles.deleteAny(line);
                     }
                 }
                 foreach (string line in Directory.EnumerateDirectories(path))
                 {
-                    string dirName = line.Remove(0, FormMain.pathGameFolder.Length);
+                    string dirName = line.Remove(0, FormMain.gameDirLength);
                     if (!ignoreList.Exists(s => s.Equals(dirName, StringComparison.OrdinalIgnoreCase)))
                     {
                         FuncFiles.deleteAny(line);
@@ -382,8 +384,7 @@ namespace SLMPLauncher
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         public static void removeENB()
         {
-            foreach (string line in new string[] {
-"_locationweather.ini", "_mist_anchors.xml", "_sample_enbraindrops", "_weatherlist.ini", "common.fxh", "d3d9.dll", "d3d9.fx", "d3d9_fxaa.dll", "d3d9_sffiles.dll", "d3d9_sfx.dll", "d3d9_sfx_fxaa.dll", "d3d9_sfx_smaa.dll", "d3d9_sharpen.dll", "d3d9_smaa.dll", "d3d9_sweetffiles.dll", "d3d9injffiles.dll", "d3d9orig.dll", "d3d9sffiles.dll", "d3d9swe.dll", @"data\enb vision.bsa", @"data\enb vision.esp", @"data\fakedirectlightremove.esp", "defaultlut.png", "dxgi.dll", "dxgi.fx", "eed_verasansmono.bmp", "effect.txt", "effect.txt.ini", "elep additional shaders", "enbbloom.fx", "enbbloom.fx.ini", "enbbloom.fx.rar", "enbdefs.fx", "enbdirt.bmp", "enbdirt.tga", "enbeffect.ffiles.ini", "enbeffect.fx", "enbeffect.fx.ini", "enbeffectprepass.fx", "enbeffectprepass.fx.ini", "enbeffectxx.fx.ini", "enbfontunicode.png", "enbfrost.bmp", "enbhelper.dll", "enbhost.exe", "enbinjector.exe", "enbinjector.ini", "enblens.fx", "enblens.fx.ini", "enblens1.fx", "enblensmask.bmp", "enblensmask.png", "enblensmask.tga", "enblocal.ini", "enblocalization.xml", "enbpalette.bmp", "enbpalette.png", "enbpalettes", "enbraindrops.tga", "enbseries", "enbseries.ini", "enbspectrum.bmp", "enbsunsprite.fx", "enbsunsprite.fx.ini", "enbsunsprite.tga", "enbweather.bmp", "enhancedenbdiagnostics.fxh", "fixforbrightobjects.txt", "fxaa_tool.exe", "injector.ini", "injfx_settings.h", "injfx_shaders", "shader functions", "shader.fx", "shift.dll", "smaa.fx", "smaa.h", "smaa_dx11.fx", "sweetfx", "sweetfx_d3d9.dll", "sweetfx_d3d9.dll", "sweetfx_preset.txt", "sweetfx_settings.txt", "technique.fxh", "volumetric_mist_anchors.xml"})
+            foreach (string line in new string[] { "enbseries", "d3d9.dll", "enbhost.exe", "enblocal.ini", "enbseries.ini", "enbinjector.exe", "enbinjector.ini", @"data\enb vision.esp" })
             {
                 FuncFiles.deleteAny(FormMain.pathGameFolder + line);
             }

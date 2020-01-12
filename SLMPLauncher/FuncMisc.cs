@@ -224,20 +224,20 @@ namespace SLMPLauncher
         {
             if (FuncParser.intRead(FormMain.pathLauncherINI, "General", "AspectRatio") == 4)
             {
-                if (File.Exists(FormMain.pathDataFolder + @"Frostfall.esp") && (!File.Exists(FormMain.pathDataFolder + @"Frostfall-WS.esp") || !File.Exists(FormMain.pathDataFolder + @"Frostfall-WS.bsa")))
+                if (File.Exists(FormMain.pathDataFolder + "Frostfall.esp") && (!File.Exists(FormMain.pathDataFolder + "Frostfall-WS.esp") || !File.Exists(FormMain.pathDataFolder + "Frostfall-WS.bsa")))
                 {
                     unpackRAR(FormMain.pathSystemFolder + "AR(4)FF.rar");
                 }
-                if (File.Exists(FormMain.pathDataFolder + @"DisableFastTravel.bsa") && new FileInfo(FormMain.pathDataFolder + @"DisableFastTravel.bsa").Length != 45717)
+                if (File.Exists(FormMain.pathDataFolder + "DisableFastTravel.bsa") && new FileInfo(FormMain.pathDataFolder + "DisableFastTravel.bsa").Length != 45717)
                 {
                     unpackRAR(FormMain.pathSystemFolder + "AR(4)DFT.rar");
                 }
             }
             else
             {
-                FuncFiles.deleteAny(FormMain.pathDataFolder + @"Frostfall-WS.esp");
-                FuncFiles.deleteAny(FormMain.pathDataFolder + @"Frostfall-WS.bsa");
-                if (File.Exists(FormMain.pathDataFolder + @"DisableFastTravel.bsa") && new FileInfo(FormMain.pathDataFolder + @"DisableFastTravel.bsa").Length != 45701)
+                FuncFiles.deleteAny(FormMain.pathDataFolder + "Frostfall-WS.esp");
+                FuncFiles.deleteAny(FormMain.pathDataFolder + "Frostfall-WS.bsa");
+                if (File.Exists(FormMain.pathDataFolder + "DisableFastTravel.bsa") && new FileInfo(FormMain.pathDataFolder + "DisableFastTravel.bsa").Length != 45701)
                 {
                     unpackRAR(FormMain.pathModsFolder + "DisableFastTravel.rar");
                 }

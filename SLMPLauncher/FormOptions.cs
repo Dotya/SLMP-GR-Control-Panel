@@ -17,8 +17,8 @@ namespace SLMPLauncher
         string pathToLoader = FormMain.pathAppData + "LoadOrder.txt";
         string textDateChange = "Не удалось изменить дату изменения файла: ";
         string textGrassDensity = "iMinGrassSize - расстояние между кустами травы, меньше - плотнее.";
+        string textMaxFPS = "fMaxTime - отвечает за правильную работу физике в игре при разном FPS.";
         string textNearDistance = "Меньше - сильнее мерцания. Больше - больше отсечения объектов вблизи.";
-        string textPredictFPS = "fMaxTime - отвечает за правильную работу физике в игре при разном FPS.";
         string textRedateMods = "Массовое изменение даты изменения файлов по возрастанию.";
         string textShadowResolution = "iShadowMapResolution - \"тяжелый\" параметр теней.";
         string textZFighting = "Уменьшает мерцание гор вдали.";
@@ -57,8 +57,8 @@ namespace SLMPLauncher
             toolTip1.SetToolTip(label26TAB, textGrassDensity);
             toolTip1.SetToolTip(trackBar_GrassDensityTAB, textGrassDensity);
             toolTip1.SetToolTip(button_RedateMods, textRedateMods);
-            toolTip1.SetToolTip(label3, textPredictFPS);
-            toolTip1.SetToolTip(comboBox_PredictFPS, textPredictFPS);
+            toolTip1.SetToolTip(label3, textMaxFPS);
+            toolTip1.SetToolTip(comboBox_MaxFPS, textMaxFPS);
             toolTip1.SetToolTip(label4, textZFighting);
             toolTip1.SetToolTip(button_ZFighting, textZFighting);
             toolTip1.SetToolTip(comboBox_ZFighting, textNearDistance);
@@ -127,14 +127,14 @@ namespace SLMPLauncher
             label33TAB.Text = "Far objects:";
             label40TAB.Text = "Objects details fade:";
             label10TAB.Text = "Display index:";
-            label3.Text = "Expected FPS:";
+            label3.Text = "Max FPS:";
             label21TAB.Text = "Resolution:";
             label6.Text = "Master files:";
             label5.Text = "Papyrus logs:";
             textDateChange = "Could not change the date the file was modified: ";
             textGrassDensity = "iMinGrassSize - distance between the grass bushes, smaller - denser.";
             textNearDistance = "Less - stronger flickering of mountains. Larger - stronger clipping textures near objects.";
-            textPredictFPS = "fMaxTime - responsible for the correct operation of the game with different FPS.";
+            textMaxFPS = "fMaxTime - responsible for the correct operation of the game with different FPS.";
             textRedateMods = "Mass change of the date of change of files in ascending order.";
             textShadowResolution = "iShadowMapResolution - \"heaviest\" shadow parameter.";
             textZFighting = "Reduces the flickering of mountains away.";
@@ -161,7 +161,7 @@ namespace SLMPLauncher
             refreshLights();
             refreshObjects();
             refreshPapyrus();
-            refreshPredictFPS();
+            refreshMaxFPS();
             refreshShadow();
             refreshShadowRange();
             refreshTextures();
@@ -355,17 +355,17 @@ namespace SLMPLauncher
         }
         private void setFileID()
         {
-            int fileID = 0;
-            foreach (ListViewItem item in listView1.Items)
+			int fileID = 0;
+            for (int i = 0; i < listView1.Items.Count; i++)
             {
-                if (item.Checked)
+                if (listView1.Items[i].Checked)
                 {
-                    item.SubItems[1].Text = BitConverter.ToString(BitConverter.GetBytes(fileID), 0, 1);
-                    fileID++;
+                    listView1.Items[i].SubItems[1].Text = BitConverter.ToString(BitConverter.GetBytes(fileID), 0, 1);
+					fileID++;
                 }
                 else
                 {
-                    item.SubItems[1].Text = "";
+                    listView1.Items[i].SubItems[1].Text = "";
                 }
             }
         }
@@ -488,9 +488,12 @@ namespace SLMPLauncher
             blockRefreshList = true;
             foreach (ListViewItem item in listView1.Items)
             {
-                item.Checked = true;
+                if (!item.Checked)
+                {
+                    checkItem(item, true);
+                }
             }
-            scanAllMods();
+            setFileID();
             writeMasterFile();
             blockRefreshList = false;
         }
@@ -516,7 +519,7 @@ namespace SLMPLauncher
         {
             if (listView1.Items.Count > 0)
             {
-                DateTime dt = new DateTime(2019, 1, 1, 12, 0, 0, DateTimeKind.Local);
+                DateTime dt = new DateTime(2020, 1, 1, 12, 0, 0, DateTimeKind.Local);
                 foreach (string line in Directory.EnumerateFiles(FormMain.pathDataFolder, "*.bsa"))
                 {
                     try
@@ -786,15 +789,15 @@ namespace SLMPLauncher
             FuncMisc.refreshComboBox(comboBox_LODObjectsTAB, new List<double>() { 12500, 25000, 40000, 75000 }, FuncParser.intRead(FormMain.pathSkyrimPrefsINI, "TerrainManager", "fTreeLoadDistance"), false, comboBox_LODObjectsTAB_SelectedIndexChanged);
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
-        private void comboBox_PredictFPS_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox_MaxFPS_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FormMain.predictFPS = FuncParser.stringToInt(comboBox_PredictFPS.SelectedItem.ToString());
+            FormMain.maxFPS = FuncParser.stringToInt(comboBox_MaxFPS.SelectedItem.ToString());
             FuncSettings.physicsFPS();
         }
-        private void refreshPredictFPS()
+        private void refreshMaxFPS()
         {
             FuncSettings.physicsFPS();
-            FuncMisc.refreshComboBox(comboBox_PredictFPS, new List<double>() { 0.0333, 0.0166, 0.0133, 0.0111, 0.0083, 0.0069, 0.0041 }, FuncParser.doubleRead(FormMain.pathSkyrimINI, "HAVOK", "fMaxTime"), false, comboBox_PredictFPS_SelectedIndexChanged);
+            FuncMisc.refreshComboBox(comboBox_MaxFPS, new List<double>() { 0.0333, 0.0166, 0.0133, 0.0111, 0.0083, 0.0069, 0.0041 }, FuncParser.doubleRead(FormMain.pathSkyrimINI, "HAVOK", "fMaxTime"), false, comboBox_MaxFPS_SelectedIndexChanged);
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         private void comboBox_WaterReflectTAB_SelectedIndexChanged(object sender, EventArgs e)
@@ -855,14 +858,14 @@ namespace SLMPLauncher
             papyrus = FuncMisc.refreshButton(button_Papyrus, FormMain.pathSkyrimINI, "Papyrus", "bEnableLogging", null, false);
             if (papyrus)
             {
-                FuncFiles.creatDirectory(FormMain.pathMyDoc + "Logs");
+                FuncFiles.creatDirectory(FormMain.pathMyDoc + @"Logs\Script");
             }
         }
         private void button_LogsFolder_Click(object sender, EventArgs e)
         {
-            if (Directory.Exists(FormMain.pathMyDoc + "Logs"))
+            if (Directory.Exists(FormMain.pathMyDoc + @"Logs\Script"))
             {
-                Process.Start(FormMain.pathMyDoc + "Logs");
+                Process.Start(FormMain.pathMyDoc + @"Logs\Script");
             }
             else if (Directory.Exists(FormMain.pathMyDoc))
             {

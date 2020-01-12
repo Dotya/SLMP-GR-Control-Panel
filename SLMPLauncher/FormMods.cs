@@ -88,15 +88,23 @@ namespace SLMPLauncher
             {
                 if (FuncMisc.dialogResult(textDeleteMod))
                 {
-                    if (File.Exists(FormMain.pathModsFolder + listBox1.SelectedItem.ToString().Replace(".rar", ".txt")))
+                    string file = FormMain.pathModsFolder + listBox1.SelectedItem.ToString().Replace(".rar", ".txt");
+                    if (File.Exists(file))
                     {
-                        foreach (string line in File.ReadLines(FormMain.pathModsFolder + listBox1.SelectedItem.ToString().Replace(".rar", ".txt")))
+                        foreach (string line in File.ReadLines(file))
                         {
-                            FuncFiles.deleteAny(FormMain.pathGameFolder + line);
+                            if (line.Length > 0)
+                            {
+                                FuncFiles.deleteAny(FormMain.pathGameFolder + line);
+                            }
+                            if (line.StartsWith("["))
+                            {
+                                break;
+                            }
                         }
-                        if (listBox1.SelectedItem.ToString().ToUpper().Contains("OSA") && File.Exists(FormMain.pathFNISRAR))
+                        if (FuncParser.keyExists(file, "UNINSTALL", "UNPACK"))
                         {
-                            FuncMisc.unpackRAR(FormMain.pathFNISRAR);
+                            FuncMisc.unpackRAR(FormMain.pathGameFolder + FuncParser.stringRead(file, "UNINSTALL", "UNPACK"));
                         }
                     }
                     else

@@ -211,22 +211,22 @@ namespace SLMPLauncher
                         fs.Seek(28, SeekOrigin.Begin);
                         fs.Read(bytesFile, 0, length);
                         fs.Close();
-                        int jump = 2 + ((bytesFile[1] << 8) | bytesFile[0]);
+                        int jump = 2 + BitConverter.ToInt16(bytesFile, 0);
                         if (equalsByteArrays(new byte[] { bytesFile[jump], bytesFile[jump + 1], bytesFile[jump + 2], bytesFile[jump + 3] }, new byte[] { 79, 70, 83, 84 }))
                         {
-                            jump += 6 + ((bytesFile[jump + 5] << 8) | bytesFile[jump + 4]);
+                            jump += 6 + BitConverter.ToInt16(bytesFile, jump + 4);
                         }
                         if (equalsByteArrays(new byte[] { bytesFile[jump], bytesFile[jump + 1], bytesFile[jump + 2], bytesFile[jump + 3] }, new byte[] { 68, 69, 76, 69 }))
                         {
-                            jump += 6 + ((bytesFile[jump + 5] << 8) | bytesFile[jump + 4]);
+                            jump += 6 + BitConverter.ToInt16(bytesFile, jump + 4);
                         }
                         if (equalsByteArrays(new byte[] { bytesFile[jump], bytesFile[jump + 1], bytesFile[jump + 2], bytesFile[jump + 3] }, new byte[] { 67, 78, 65, 77 }))
                         {
-                            jump += 6 + ((bytesFile[jump + 5] << 8) | bytesFile[jump + 4]);
+                            jump += 6 + BitConverter.ToInt16(bytesFile, jump + 4);
                         }
                         if (equalsByteArrays(new byte[] { bytesFile[jump], bytesFile[jump + 1], bytesFile[jump + 2], bytesFile[jump + 3] }, new byte[] { 83, 78, 65, 77 }))
                         {
-                            jump += 6 + ((bytesFile[jump + 5] << 8) | bytesFile[jump + 4]);
+                            jump += 6 + BitConverter.ToInt16(bytesFile, jump + 4);
                         }
                         for (int i = jump; i < bytesFile.Length; i++)
                         {

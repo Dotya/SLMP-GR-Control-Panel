@@ -30,7 +30,7 @@
 		private System.Windows.Forms.ComboBox comboBox_AFTAB;
 		private System.Windows.Forms.ComboBox comboBox_DecalsTAB;
 		private System.Windows.Forms.ComboBox comboBox_LODObjectsTAB;
-		private System.Windows.Forms.ComboBox comboBox_PredictFPS;
+		private System.Windows.Forms.ComboBox comboBox_MaxFPS;
 		private System.Windows.Forms.ComboBox comboBox_ResolutionTAB;
 		private System.Windows.Forms.ComboBox comboBox_ScreenTAB;
 		private System.Windows.Forms.ComboBox comboBox_ShadowTAB;
@@ -134,7 +134,7 @@
             this.comboBox_AFTAB = new System.Windows.Forms.ComboBox();
             this.comboBox_DecalsTAB = new System.Windows.Forms.ComboBox();
             this.comboBox_LODObjectsTAB = new System.Windows.Forms.ComboBox();
-            this.comboBox_PredictFPS = new System.Windows.Forms.ComboBox();
+            this.comboBox_MaxFPS = new System.Windows.Forms.ComboBox();
             this.comboBox_ResolutionTAB = new System.Windows.Forms.ComboBox();
             this.comboBox_ScreenTAB = new System.Windows.Forms.ComboBox();
             this.comboBox_ShadowTAB = new System.Windows.Forms.ComboBox();
@@ -574,12 +574,12 @@
             this.comboBox_LODObjectsTAB.Visible = false;
             this.comboBox_LODObjectsTAB.SelectedIndexChanged += new System.EventHandler(this.comboBox_LODObjectsTAB_SelectedIndexChanged);
             // 
-            // comboBox_PredictFPS
+            // comboBox_MaxFPS
             // 
-            this.comboBox_PredictFPS.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_PredictFPS.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.comboBox_PredictFPS.FormattingEnabled = true;
-            this.comboBox_PredictFPS.Items.AddRange(new object[] {
+            this.comboBox_MaxFPS.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_MaxFPS.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBox_MaxFPS.FormattingEnabled = true;
+            this.comboBox_MaxFPS.Items.AddRange(new object[] {
             "30",
             "60",
             "75",
@@ -587,11 +587,11 @@
             "120",
             "144",
             "240"});
-            this.comboBox_PredictFPS.Location = new System.Drawing.Point(66, 487);
-            this.comboBox_PredictFPS.Name = "comboBox_PredictFPS";
-            this.comboBox_PredictFPS.Size = new System.Drawing.Size(50, 23);
-            this.comboBox_PredictFPS.TabIndex = 32;
-            this.comboBox_PredictFPS.SelectedIndexChanged += new System.EventHandler(this.comboBox_PredictFPS_SelectedIndexChanged);
+            this.comboBox_MaxFPS.Location = new System.Drawing.Point(66, 487);
+            this.comboBox_MaxFPS.Name = "comboBox_MaxFPS";
+            this.comboBox_MaxFPS.Size = new System.Drawing.Size(50, 23);
+            this.comboBox_MaxFPS.TabIndex = 32;
+            this.comboBox_MaxFPS.SelectedIndexChanged += new System.EventHandler(this.comboBox_MaxFPS_SelectedIndexChanged);
             // 
             // comboBox_ResolutionTAB
             // 
@@ -948,7 +948,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(176, 18);
             this.label3.TabIndex = 0;
-            this.label3.Text = "Ожидаемый FPS:";
+            this.label3.Text = "Макс. FPS:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label30TAB
@@ -1449,7 +1449,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox_ZFighting);
-            this.Controls.Add(this.comboBox_PredictFPS);
+            this.Controls.Add(this.comboBox_MaxFPS);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.DoubleBuffered = true;

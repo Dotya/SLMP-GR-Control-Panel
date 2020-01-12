@@ -14,7 +14,7 @@ namespace SLMPLauncher
     {
         public static string pathLauncherExecuting = Process.GetCurrentProcess().MainModule.FileName;
         public static string pathLauncherFolder = FuncFiles.pathAddSlash(Path.GetDirectoryName(pathLauncherExecuting));
-        public static string pathGameFolder = FuncFiles.pathAddSlash(Path.GetFullPath(pathLauncherFolder + ".."));
+        public static string pathGameFolder = FuncFiles.pathAddSlash(Path.GetFullPath(pathLauncherFolder + @"..\"));
         public static string pathDataFolder = pathGameFolder + @"Data\";
         public static string pathENBFolder = pathLauncherFolder + @"ENB\";
         public static string pathModsFolder = pathLauncherFolder + @"Mods\";
@@ -43,8 +43,9 @@ namespace SLMPLauncher
         public static string textFailedCopy = null;
         public static string textFailedCreate = null;
         public static int argsWaitBefore = 0;
+        public static int gameDirLength = pathGameFolder.Length;
+        public static int maxFPS = 60;
         public static int numberStyle = 1;
-        public static int predictFPS = 60;
         public static int settingsPreset = 2;
         public static bool windgetOpen = false;
         public static FontStyle customFontStyle = FontStyle.Regular;
@@ -143,7 +144,7 @@ namespace SLMPLauncher
                 {
                     numberStyle = 1;
                 }
-                if (FuncParser.stringRead(pathLauncherINI, "General", "Language").ToUpper() == "EN")
+                if (string.Equals(FuncParser.stringRead(pathLauncherINI, "General", "Language"), "EN", StringComparison.OrdinalIgnoreCase))
                 {
                     langTranslate = "EN";
                     setLangTranslateEN();
@@ -152,10 +153,10 @@ namespace SLMPLauncher
                 {
                     setLangTranslateRU();
                 }
-                predictFPS = FuncParser.intRead(pathLauncherINI, "Game", "PredictFPS");
-                if (predictFPS < 30 || predictFPS > 240)
+                maxFPS = FuncParser.intRead(pathLauncherINI, "Game", "MaxFPS");
+                if (maxFPS < 30 || maxFPS > 240)
                 {
-                    predictFPS = 60;
+                    maxFPS = 60;
                 }
                 if (!FuncParser.keyExists(pathLauncherINI, "Game", "ZFighting"))
                 {
@@ -233,7 +234,7 @@ namespace SLMPLauncher
                 "Language=RU",
                 "",
                 "[Game]",
-                "PredictFPS=60",
+                "MaxFPS=60",
                 "ZFighting=false",
                 "NearDistance=18",
                 "",
@@ -258,14 +259,14 @@ namespace SLMPLauncher
                 "   Trebuchet MS",
                 "",
                 "[Updates]",
-                "UpdateHost=http://www.slmp.ru/_SLMP-GR/2.7/" });
+                "UpdateHost=http://www.slmp.ru/_SLMP-GR/2.8/" });
             }
             else
             {
                 FuncParser.iniWrite(pathLauncherINI, "General", "SettingsPreset", settingsPreset.ToString());
                 FuncParser.iniWrite(pathLauncherINI, "General", "NumberStyle", numberStyle.ToString());
                 FuncParser.iniWrite(pathLauncherINI, "General", "Language", langTranslate);
-                FuncParser.iniWrite(pathLauncherINI, "Game", "PredictFPS", predictFPS.ToString());
+                FuncParser.iniWrite(pathLauncherINI, "Game", "MaxFPS", maxFPS.ToString());
                 if (Top >= 0 && Left >= 0)
                 {
                     FuncParser.iniWrite(pathLauncherINI, "General", "POS_WindowTop", Top.ToString());
@@ -497,21 +498,58 @@ namespace SLMPLauncher
                     ignoreList.AddRange(File.ReadAllLines(pathIgnoreINI));
                     foreach (string line in openFileDialog1.FileNames)
                     {
-                        string file = line.Remove(0, pathGameFolder.Length);
+                        string file = line.Remove(0, gameDirLength);
                         if (!ignoreList.Exists(s => s.Equals(file, StringComparison.OrdinalIgnoreCase)))
                         {
                             ignoreList.Add(file);
                         }
                     }
                     string path = Path.GetDirectoryName(openFileDialog1.FileName);
-                    while (path.Length > pathGameFolder.Length)
+                    while (path.Length > gameDirLength)
                     {
-                        string folder = path.Remove(0, pathGameFolder.Length);
+                        string folder = path.Remove(0, gameDirLength);
                         if (!ignoreList.Exists(s => s.Equals(folder, StringComparison.OrdinalIgnoreCase)))
                         {
                             ignoreList.Add(folder);
                         }
                         path = Path.GetDirectoryName(path);
+                    }
+                    FuncMisc.writeToFile(pathIgnoreINI, ignoreList);
+                    ignoreList.Clear();
+                }
+                else
+                {
+                    MessageBox.Show(textNotInDirectory);
+                }
+            }
+        }
+        private void button_AddIgnoreFolder_Click(object sender, EventArgs e)
+        {
+            label1.Focus();
+            folderBrowserDialog1.SelectedPath = pathGameFolder;
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                if (folderBrowserDialog1.SelectedPath.IndexOf(pathGameFolder, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    List<string> ignoreList = new List<string>();
+                    ignoreList.AddRange(File.ReadAllLines(pathIgnoreINI));
+                    ignoreList.Add(folderBrowserDialog1.SelectedPath.Remove(0, gameDirLength));
+                    foreach (string line1 in Directory.EnumerateDirectories(folderBrowserDialog1.SelectedPath, "*", SearchOption.AllDirectories))
+                    {
+                        string folder = line1.Remove(0, gameDirLength);
+                        if (!ignoreList.Exists(s => s.Equals(folder, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            ignoreList.Add(folder);
+                        }
+                    }
+                    foreach (string line2 in Directory.EnumerateFiles(folderBrowserDialog1.SelectedPath, "*", SearchOption.AllDirectories))
+                    {
+                        string file = line2.Remove(0, gameDirLength);
+                        if (!ignoreList.Exists(s => s.Equals(file, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            ignoreList.Add(file);
+                        }
                     }
                     FuncMisc.writeToFile(pathIgnoreINI, ignoreList);
                     ignoreList.Clear();
@@ -721,6 +759,7 @@ namespace SLMPLauncher
             textUnPackFNIS = "Распаковать стандартные файлы FNIS из архива:" + Environment.NewLine + pathFNISRAR;
             textUseStandart = "Будут использованы стандартные шаблоны настроек т.к. не найден файл: " + Environment.NewLine;
             toolTip1.SetToolTip(button_AddIgnoreFiles, "Добавление файла(ов) в шаблон игнор листа.");
+            toolTip1.SetToolTip(button_AddIgnoreFolder, "Добавление папки в шаблон игнор листа.");
             toolTip1.SetToolTip(button_ClearDirectory, "Удаляет \"чужие\" файлы. В т.ч. распакованные программы.");
             toolTip1.SetToolTip(button_DSR, "Патчер Dual Sheath Redux. Применять после изменения модов содержащих оружие.");
             toolTip1.SetToolTip(button_ENB, "Меню управления ENB с выбором различных пресетов.");
@@ -766,6 +805,7 @@ namespace SLMPLauncher
             textUnPackFNIS = "Unpack the standard FNIS files from the archive:" + Environment.NewLine + pathFNISRAR;
             textUseStandart = "Standard templates of settings will be used because file not found: " + Environment.NewLine;
             toolTip1.SetToolTip(button_AddIgnoreFiles, "Adding a file(s) to the ignore list template.");
+            toolTip1.SetToolTip(button_AddIgnoreFolder, "Adding a folder to the ignore list template.");
             toolTip1.SetToolTip(button_ClearDirectory, "Delete \"strangers\" files. Including unpacked programs.");
             toolTip1.SetToolTip(button_DSR, "Patcher Dual Sheath Redux. Apply after the change in the mods containing the weapons.");
             toolTip1.SetToolTip(button_ENB, "The ENB control menu with a selection of different presets.");
@@ -857,6 +897,7 @@ namespace SLMPLauncher
             button_ResetSettings.BackgroundImage = BMbuttonFull;
             button_ClearDirectory.BackgroundImage = BMbuttonClear;
             button_AddIgnoreFiles.BackgroundImage = BMbuttonOne;
+            button_AddIgnoreFolder.BackgroundImage = BMbuttonOne;
             button_Mods.BackgroundImage = BMbuttonHalf;
             button_MyDocs.BackgroundImage = BMbuttonFull;
             button_Programs.BackgroundImage = BMbuttonFull;

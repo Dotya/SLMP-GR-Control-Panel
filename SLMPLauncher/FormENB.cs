@@ -130,7 +130,7 @@ namespace SLMPLauncher
                 FuncMisc.refreshButton(button_EAA, "", "", "", null, false);
                 FuncMisc.refreshButton(button_SAA, "", "", "", null, false);
                 FuncMisc.refreshButton(button_TAA, "", "", "", null, false);
-                if (!File.Exists(FormMain.pathDataFolder + @"GameText9.bsa"))
+                if (!File.Exists(FormMain.pathDataFolder + "GameText9.bsa"))
                 {
                     FuncMisc.unpackRAR(FormMain.pathSystemFolder + "GameText9.rar");
                 }
@@ -142,7 +142,7 @@ namespace SLMPLauncher
                 refreshEAA();
                 refreshSAA();
                 refreshTAA();
-                FuncFiles.deleteAny(FormMain.pathDataFolder + @"GameText9.bsa");
+                FuncFiles.deleteAny(FormMain.pathDataFolder + "GameText9.bsa");
             }
             refreshAF();
             refreshAutoDetect();
@@ -160,15 +160,11 @@ namespace SLMPLauncher
                 listBox1.Enabled = false;
                 FuncClear.removeENB();
                 FuncMisc.unpackRAR(FormMain.pathENBFolder + listBox1.SelectedItem.ToString());
-                listBox1.Enabled = true;
-                FuncMisc.toggleButtons(this, true);
                 FuncParser.iniWrite(FormMain.pathLauncherINI, "ENB", "LastPreset", listBox1.SelectedItem.ToString());
                 FuncParser.iniWrite(FormMain.pathENBLocalINI, "MEMORY", "VideoMemorySizeMb", FuncParser.stringRead(FormMain.pathLauncherINI, "ENB", "MemorySizeMb"));
+                listBox1.Enabled = true;
+                FuncMisc.toggleButtons(this, true);
                 refreshAllValue();
-                if (listBox1.SelectedItem.ToString().IndexOf("boost", StringComparison.OrdinalIgnoreCase) >= 0 || listBox1.SelectedItem.ToString().IndexOf("lite", StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    FuncMisc.unpackRAR(FormMain.pathSystemFolder + "ENB Vision.rar");
-                }
             }
             else
             {
@@ -272,7 +268,7 @@ namespace SLMPLauncher
         {
             if (fps)
             {
-                FormMain.predictFPS = FuncParser.stringToInt(comboBox_FPS.SelectedItem.ToString());
+                FormMain.maxFPS = FuncParser.stringToInt(comboBox_FPS.SelectedItem.ToString());
                 FuncSettings.physicsFPS();
             }
         }

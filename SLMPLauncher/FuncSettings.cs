@@ -183,10 +183,10 @@ namespace SLMPLauncher
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         public static void physicsFPS()
         {
-            FuncParser.iniWrite(FormMain.pathSkyrimINI, "HAVOK", "fMaxTime", (((double)1 / FormMain.predictFPS).ToString() + "000000").Replace(",", ".").Remove(6));
+            FuncParser.iniWrite(FormMain.pathSkyrimINI, "HAVOK", "fMaxTime", (((double)1 / FormMain.maxFPS).ToString() + "000000").Replace(",", ".").Remove(6));
             if (File.Exists(FormMain.pathENBLocalINI))
             {
-                FuncParser.iniWrite(FormMain.pathENBLocalINI, "LIMITER", "FPSLimit", FormMain.predictFPS.ToString() + ".0");
+                FuncParser.iniWrite(FormMain.pathENBLocalINI, "LIMITER", "FPSLimit", FormMain.maxFPS.ToString() + ".0");
             }
         }
         public static void restoreENBAdapter()
@@ -218,7 +218,7 @@ namespace SLMPLauncher
         }
         public static bool checkENB()
         {
-            if (File.Exists(FormMain.pathGameFolder + "d3d9.dll") && File.Exists(FormMain.pathENBLocalINI))
+            if ((File.Exists(FormMain.pathGameFolder + "d3d9.dll") || File.Exists(FormMain.pathGameFolder + "enbseries.dll")) && File.Exists(FormMain.pathENBLocalINI))
             {
                 if (checkENBoost())
                 {
@@ -505,6 +505,7 @@ namespace SLMPLauncher
                 "DeadlySpellImpacts.esp",
                 "DestructibleBottles.esp",
                 "Quests Markers.esp",
+                "Weather SVWI.esp",
                 "ArmorWeapon.esp",
                 "HorseArmor.esp",
                 "ENB Vision.esp",
@@ -542,7 +543,7 @@ namespace SLMPLauncher
                 "Customizable Camera.esp",
                 "Follower Commentary.esp",
                 "StaticLoadingScreens.esp",
-                "FakeDirectLightRemove.esp",
+                "RemoveFakeDirectLight.esp",
                 "Occlusion Of The Worlds.esp",
                 "Dual Sheath Redux Patch.esp"};
         }
