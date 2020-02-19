@@ -93,13 +93,13 @@ namespace SLMPLauncher
                     {
                         foreach (string line in File.ReadLines(file))
                         {
-                            if (line.Length > 0)
-                            {
-                                FuncFiles.deleteAny(FormMain.pathGameFolder + line);
-                            }
                             if (line.StartsWith("["))
                             {
                                 break;
+                            }
+                            else if (line.Length > 0)
+                            {
+                                FuncFiles.deleteAny(FormMain.pathGameFolder + line);
                             }
                         }
                         if (FuncParser.keyExists(file, "UNINSTALL", "UNPACK"))

@@ -19,7 +19,7 @@ namespace SLMPLauncher
                 FuncParser.iniWrite(FormMain.pathSkyrimPrefsINI, "Display", "iShadowMapResolution", "512");
                 FuncParser.iniWrite(FormMain.pathSkyrimPrefsINI, "Display", "bFXAAEnabled", "1");
                 FuncParser.iniWrite(FormMain.pathSkyrimPrefsINI, "Grass", "fGrassStartFadeDistance", "1000.0000");
-                FuncParser.iniWrite(FormMain.pathSkyrimINI, "Grass", "iMinGrassSize", "50");
+                FuncParser.iniWrite(FormMain.pathSkyrimINI, "Grass", "iMinGrassSize", "30");
 
                 FuncParser.iniWrite(FormMain.pathSkyrimPrefsINI, "Display", "fMeshLODLevel1FadeDist", "4096.0000");
                 FuncParser.iniWrite(FormMain.pathSkyrimPrefsINI, "Display", "fMeshLODLevel2FadeDist", "3072.0000");
@@ -61,7 +61,7 @@ namespace SLMPLauncher
                 FuncParser.iniWrite(FormMain.pathSkyrimPrefsINI, "Display", "iShadowMapResolution", "1024");
                 FuncParser.iniWrite(FormMain.pathSkyrimPrefsINI, "Display", "bFXAAEnabled", "1");
                 FuncParser.iniWrite(FormMain.pathSkyrimPrefsINI, "Grass", "fGrassStartFadeDistance", "3000.0000");
-                FuncParser.iniWrite(FormMain.pathSkyrimINI, "Grass", "iMinGrassSize", "35");
+                FuncParser.iniWrite(FormMain.pathSkyrimINI, "Grass", "iMinGrassSize", "25");
 
                 FuncParser.iniWrite(FormMain.pathSkyrimPrefsINI, "Display", "fMeshLODLevel1FadeDist", "4096.0000");
                 FuncParser.iniWrite(FormMain.pathSkyrimPrefsINI, "Display", "fMeshLODLevel2FadeDist", "3072.0000");
@@ -434,7 +434,7 @@ namespace SLMPLauncher
                 "",
                 "[AudioMenu]",
                 "fAudioMasterVolume=1.0000",
-                "fVal7=1.0000",
+                "fVal7=0.7500",
                 "uID7=0",
                 "fVal6=1.0000",
                 "uID6=0",
@@ -444,11 +444,11 @@ namespace SLMPLauncher
                 "uID4=0",
                 "fVal3=1.0000",
                 "uID3=0",
-                "fVal2=0.7500",
+                "fVal2=0.5000",
                 "uID2=466532",
                 "fVal1=0.7500",
                 "uID1=554685",
-                "fVal0=1.0000",
+                "fVal0=0.7500",
                 "uID0=1007612",
                 "",
                 "[TerrainManager]",
