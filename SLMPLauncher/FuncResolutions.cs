@@ -48,24 +48,24 @@ namespace SLMPLauncher
             public int dmPanningHeight;
         }
 
-        public static void Resolutions()
+        public static void Resolutions(string screenName)
         {
-            DEVMODE vDevMode = new DEVMODE();
-            int i = 0;
-            int w = 0;
-            int h = 0;
             try
             {
-                while (EnumDisplaySettings(null, i, ref vDevMode))
+                DEVMODE devMode = new DEVMODE();
+                int modeNum = 0;
+                int resCount = -1;
+                while (EnumDisplaySettings(screenName, modeNum, ref devMode))
                 {
-                    w =vDevMode.dmPelsWidth;
-                    h = vDevMode.dmPelsHeight;
-                    if (w >= 800 && h >= 600)
+                    int w = devMode.dmPelsWidth;
+                    int h = devMode.dmPelsHeight;
+                    if (devMode.dmBitsPerPel == 32 && w >= 800 && h >= 600 && (resCount == -1 || (FormOptions.screenListW[resCount] != w || FormOptions.screenListH[resCount] != h)))
                     {
                         FormOptions.screenListW.Add(w);
                         FormOptions.screenListH.Add(h);
+                        resCount++;
                     }
-                    i++;
+                    modeNum++;
                 }
             }
             catch

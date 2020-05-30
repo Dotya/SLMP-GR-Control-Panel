@@ -47,7 +47,7 @@ namespace SLMPLauncher
         public static int maxFPS = 60;
         public static int numberStyle = 1;
         public static int settingsPreset = 2;
-        public static bool windgetOpen = false;
+        internal static FormMain formMain = null;
         public static FontStyle customFontStyle = FontStyle.Regular;
         public static string pathFNISRAR = pathSystemFolder + "FNIS.rar";
         string pathFNIS = pathDataFolder + @"Tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe";
@@ -71,20 +71,21 @@ namespace SLMPLauncher
         int mouseWindowY = 0;
         const int CS_DBLCLKS = 0x8;
         const int WS_MINIMIZEBOX = 0x20000;
-        public Bitmap BMBackgroundImage;
-        public Bitmap BMbuttonClear;
-        public Bitmap BMbuttonClearGlow;
-        public Bitmap BMbuttonFull;
-        public Bitmap BMbuttonFullGlow;
-        public Bitmap BMbuttonFullPressed;
-        public Bitmap BMbuttonHalf;
-        public Bitmap BMbuttonHalfGlow;
-        public Bitmap BMbuttonHalfPressed;
-        public Bitmap BMbuttonOne;
-        public Bitmap BMbuttonOneGlow;
-        public Bitmap BMbuttonlogo;
-        public Bitmap BMbuttonlogoGlow;
-        public Bitmap BMbuttonlogoPressed;
+        bool windgetOpen = false;
+        Bitmap BMBackgroundImage;
+        Bitmap BMbuttonClear;
+        Bitmap BMbuttonClearGlow;
+        Bitmap BMbuttonFull;
+        Bitmap BMbuttonFullGlow;
+        Bitmap BMbuttonFullPressed;
+        Bitmap BMbuttonHalf;
+        Bitmap BMbuttonHalfGlow;
+        Bitmap BMbuttonHalfPressed;
+        Bitmap BMbuttonOne;
+        Bitmap BMbuttonOneGlow;
+        Bitmap BMbuttonlogo;
+        Bitmap BMbuttonlogoGlow;
+        Bitmap BMbuttonlogoPressed;
         FormWidget settingsWidget = null;
 
         public FormMain()
@@ -199,6 +200,7 @@ namespace SLMPLauncher
             }
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(closeControlPanel);
             refreshStyle();
+            formMain = this;
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         protected override CreateParams CreateParams
@@ -259,7 +261,7 @@ namespace SLMPLauncher
                 "   Trebuchet MS",
                 "",
                 "[Updates]",
-                "UpdateHost=http://www.slmp.ru/_SLMP-GR/2.8/" });
+                "UpdateHost=http://www.slmp.ru/_SLMP-GR/2.9/" });
             }
             else
             {
@@ -568,7 +570,6 @@ namespace SLMPLauncher
             {
                 var form = new FormPrograms();
                 form.ShowDialog();
-                form = null;
             }
             else
             {
@@ -581,7 +582,6 @@ namespace SLMPLauncher
             label1.Focus();
             var form = new FormENB();
             form.ShowDialog();
-            form = null;
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         private void button_Mods_Click(object sender, EventArgs e)
@@ -589,7 +589,6 @@ namespace SLMPLauncher
             label1.Focus();
             var form = new FormMods();
             form.ShowDialog();
-            form = null;
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         private void button_Options_Click(object sender, EventArgs e)
@@ -599,7 +598,6 @@ namespace SLMPLauncher
             {
                 var form = new FormOptions();
                 form.ShowDialog();
-                form = null;
             }
             else
             {
@@ -673,7 +671,6 @@ namespace SLMPLauncher
             {
                 windgetOpen = false;
                 settingsWidget.Dispose();
-                settingsWidget = null;
                 button_Widget.BackgroundImage = Properties.Resources.buttonWidget;
             }
         }

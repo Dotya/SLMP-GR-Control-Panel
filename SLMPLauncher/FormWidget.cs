@@ -6,8 +6,6 @@ namespace SLMPLauncher
 {
     public partial class FormWidget : Form
     {
-        FormMain mainFormStyle = null;
-
         public FormWidget()
         {
             InitializeComponent();
@@ -52,8 +50,7 @@ namespace SLMPLauncher
         {
             if (e.KeyCode == Keys.Escape)
             {
-                mainFormStyle = Owner as FormMain;
-                mainFormStyle.button_Widget_Click(this, new EventArgs());
+                FormMain.formMain.button_Widget_Click(this, new EventArgs());
                 Dispose();
             }
         }
@@ -61,8 +58,7 @@ namespace SLMPLauncher
         private void comboBox_Styles_SelectedIndexChanged(object sender, EventArgs e)
         {
             FormMain.numberStyle = comboBox_Styles.SelectedIndex + 1;
-            mainFormStyle = Owner as FormMain;
-            mainFormStyle.refreshStyle();
+            FormMain.formMain.refreshStyle();
             if (comboBox_Styles.SelectedIndex == 0)
             {
                 BackgroundImage = Properties.Resources.FormBackgroundNone;
@@ -81,8 +77,7 @@ namespace SLMPLauncher
         private void button_RU_Click(object sender, EventArgs e)
         {
             FormMain.langTranslate = "RU";
-            mainFormStyle = Owner as FormMain;
-            mainFormStyle.setLangTranslateRU();
+            FormMain.formMain.setLangTranslateRU();
             label2.Text = "Стиль:";
             button_Updates.Text = "Обновления";
             comboBox_Styles.Items.Clear();
@@ -94,16 +89,14 @@ namespace SLMPLauncher
         private void button_EN_Click(object sender, EventArgs e)
         {
             FormMain.langTranslate = "EN";
-            mainFormStyle = Owner as FormMain;
-            mainFormStyle.setLangTranslateEN();
+            FormMain.formMain.setLangTranslateEN();
             langTranslateEN();
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         private void button_Updates_Click(object sender, EventArgs e)
         {
             var form = new FormUpdates();
-            form.ShowDialog(Owner);
-            form = null;
+            form.ShowDialog();
         }
     }
 }

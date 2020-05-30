@@ -22,8 +22,7 @@ namespace SLMPLauncher
         string textRedateMods = "Массовое изменение даты изменения файлов по возрастанию.";
         string textShadowResolution = "iShadowMapResolution - \"тяжелый\" параметр теней.";
         string textZFighting = "Уменьшает мерцание гор вдали.";
-        DateTime lastWriteData = Directory.GetLastWriteTime(FormMain.pathDataFolder);
-        ListViewItem itemStartMove = null;
+        string selectedScreen = null;
         int nextESMIndex = 0;
         bool blockRefreshList = true;
         bool fxaa = false;
@@ -38,6 +37,9 @@ namespace SLMPLauncher
         bool vsync = false;
         bool window = false;
         bool zfighting = false;
+        ListViewItem itemStartMove = null;
+        Screen[] screens = Screen.AllScreens;
+        DateTime lastWriteData = Directory.GetLastWriteTime(FormMain.pathDataFolder);
 
         public FormOptions()
         {
@@ -62,8 +64,8 @@ namespace SLMPLauncher
             toolTip1.SetToolTip(label4, textZFighting);
             toolTip1.SetToolTip(button_ZFighting, textZFighting);
             toolTip1.SetToolTip(comboBox_ZFighting, textNearDistance);
-            refreshScreenResolution();
             refreshScreenIndex();
+            refreshScreenResolution();
             refreshSettings();
             refreshModsList();
             timer2.Enabled = true;
@@ -578,52 +580,12 @@ namespace SLMPLauncher
             screenListW.Clear();
             screenListH.Clear();
             comboBox_ResolutionTAB.Items.Clear();
-            bool fail = false;
-            try
-            {
-                var scope = new ManagementScope();
-                var query = new ObjectQuery("SELECT * FROM CIM_VideoControllerResolution");
-                using (var searcher = new ManagementObjectSearcher(scope, query))
-                {
-                    var results = searcher.Get();
-                    int w = 0;
-                    int h = 0;
-                    foreach (var result in results)
-                    {
-                        w = FuncParser.stringToInt(result["HorizontalResolution"].ToString());
-                        h = FuncParser.stringToInt(result["VerticalResolution"].ToString());
-                        if (w >= 800 && h >= 600)
-                        {
-                            screenListW.Add(w);
-                            screenListH.Add(h);
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                fail = true;
-            }
-            if (fail || screenListW.Count != screenListH.Count || screenListW.Count < 2)
-            {
-                FuncResolutions.Resolutions();
-            }
+            FuncResolutions.Resolutions(selectedScreen);
             if (screenListW.Count == screenListH.Count && screenListW.Count > 0)
             {
-                string line = null;
                 for (int i = 0; i < screenListW.Count; i++)
                 {
-                    line = screenListW[i].ToString() + " x " + screenListH[i].ToString();
-                    if (!comboBox_ResolutionTAB.Items.Contains(line))
-                    {
-                        comboBox_ResolutionTAB.Items.Add(line);
-                    }
-                    else
-                    {
-                        screenListW.RemoveAt(i);
-                        screenListH.RemoveAt(i);
-                        i--;
-                    }
+                    comboBox_ResolutionTAB.Items.Add(screenListW[i].ToString() + " x " + screenListH[i].ToString());
                 }
             }
             comboBox_ResolutionTAB.SelectedIndexChanged -= comboBox_ResolutionTAB_SelectedIndexChanged;
@@ -635,14 +597,14 @@ namespace SLMPLauncher
         {
             if (comboBox_ResolutionTAB.SelectedIndex != -1)
             {
-                double[] arlist = new double[] { 1.3, 1.4, 1.7, 1.8, 2.5 };
-                double ar = (double)screenListW[comboBox_ResolutionTAB.SelectedIndex] / screenListH[comboBox_ResolutionTAB.SelectedIndex];
-                int arl = FuncParser.intRead(FormMain.pathLauncherINI, "General", "AspectRatio");
-                for (int i = 0; i < arlist.Length; i++)
+                double[] arList = new double[] { 1.3, 1.4, 1.7, 1.8, 2.5 };
+                double arRes = (double)screenListW[comboBox_ResolutionTAB.SelectedIndex] / screenListH[comboBox_ResolutionTAB.SelectedIndex];
+                int arOld = FuncParser.intRead(FormMain.pathLauncherINI, "General", "AspectRatio");
+                for (int i = 0; i < arList.Length; i++)
                 {
-                    if (ar <= arlist[i] || (i == 4 && ar > 2.5))
+                    if (arRes <= arList[i] || (i == 4 && arRes > 2.5))
                     {
-                        if (arl != i)
+                        if (arOld != i)
                         {
                             FuncMisc.unpackRAR(FormMain.pathSystemFolder + "AR(" + i.ToString() + ").rar");
                             FuncParser.iniWrite(FormMain.pathLauncherINI, "General", "AspectRatio", i.ToString());
@@ -657,26 +619,28 @@ namespace SLMPLauncher
         private void comboBox_ScreenTAB_SelectedIndexChanged(object sender, EventArgs e)
         {
             FuncParser.iniWrite(FormMain.pathSkyrimINI, "Display", "iAdapter", comboBox_ScreenTAB.SelectedIndex.ToString());
+            selectedScreen = screens[comboBox_ScreenTAB.SelectedIndex].DeviceName;
+            refreshScreenResolution();
             FuncSettings.restoreENBAdapter();
         }
         private void refreshScreenIndex()
         {
-            FuncSettings.restoreENBAdapter();
-            Screen[] screens = Screen.AllScreens;
-            if (screens.Length > 1)
+            comboBox_ScreenTAB.Items.Clear();
+            if (screens.Length > 0)
             {
-                comboBox_ScreenTAB.Items.Clear();
                 for (int i = 0; i < screens.Length; i++)
                 {
                     comboBox_ScreenTAB.Items.Add(i.ToString());
                 }
-            }
-            int value = FuncParser.intRead(FormMain.pathSkyrimINI, "Display", "iAdapter");
-            if (value > -1 && value < comboBox_ScreenTAB.Items.Count)
-            {
-                comboBox_ScreenTAB.SelectedIndexChanged -= comboBox_ScreenTAB_SelectedIndexChanged;
-                comboBox_ScreenTAB.SelectedIndex = value;
-                comboBox_ScreenTAB.SelectedIndexChanged += comboBox_ScreenTAB_SelectedIndexChanged;
+                int value = FuncParser.intRead(FormMain.pathSkyrimINI, "Display", "iAdapter");
+                if (value >= 0 && value < comboBox_ScreenTAB.Items.Count)
+                {
+                    comboBox_ScreenTAB.SelectedIndexChanged -= comboBox_ScreenTAB_SelectedIndexChanged;
+                    comboBox_ScreenTAB.SelectedIndex = value;
+                    selectedScreen = screens[value].DeviceName;
+                    comboBox_ScreenTAB.SelectedIndexChanged += comboBox_ScreenTAB_SelectedIndexChanged;
+                }
+                FuncSettings.restoreENBAdapter();
             }
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
@@ -796,8 +760,8 @@ namespace SLMPLauncher
         }
         private void refreshMaxFPS()
         {
-            FuncSettings.physicsFPS();
             FuncMisc.refreshComboBox(comboBox_MaxFPS, new List<double>() { 0.0333, 0.0166, 0.0133, 0.0111, 0.0083, 0.0069, 0.0041 }, FuncParser.doubleRead(FormMain.pathSkyrimINI, "HAVOK", "fMaxTime"), false, comboBox_MaxFPS_SelectedIndexChanged);
+            FuncSettings.physicsFPS();
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         private void comboBox_WaterReflectTAB_SelectedIndexChanged(object sender, EventArgs e)
@@ -920,8 +884,8 @@ namespace SLMPLauncher
         }
         private void refreshWindow()
         {
-            FuncSettings.restoreENBBorderless();
             window = FuncMisc.refreshButton(button_WindowTAB, FormMain.pathSkyrimPrefsINI, "Display", "bFull Screen", null, true);
+            FuncSettings.restoreENBBorderless();
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         private void button_VsyncTAB_Click(object sender, EventArgs e)
@@ -931,8 +895,8 @@ namespace SLMPLauncher
         }
         private void refreshVsync()
         {
-            FuncSettings.restoreENBVSync();
             vsync = FuncMisc.refreshButton(button_VsyncTAB, FormMain.pathSkyrimINI, "Display", "iPresentInterval", null, false);
+            FuncSettings.restoreENBVSync();
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         private void button_FXAATAB_Click(object sender, EventArgs e)
