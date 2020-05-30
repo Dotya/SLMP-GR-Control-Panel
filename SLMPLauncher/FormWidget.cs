@@ -96,7 +96,7 @@ namespace SLMPLauncher
         private void button_Updates_Click(object sender, EventArgs e)
         {
             var form = new FormUpdates();
-            form.ShowDialog();
+            form.ShowDialog(Owner);
         }
     }
 }
