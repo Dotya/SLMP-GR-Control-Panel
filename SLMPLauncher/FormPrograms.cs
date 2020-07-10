@@ -39,20 +39,20 @@ namespace SLMPLauncher
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         private void button_CreationKit_Click(object sender, EventArgs e)
         {
-            programsUnpack("CREATIONKIT.rar");
+            programsUnpack("CREATIONKIT");
         }
         private void button_TES5Edit_Click(object sender, EventArgs e)
         {
-            programsUnpack("TES5EDIT.rar");
+            programsUnpack("TES5EDIT");
         }
         private void button_TES5LODGen_Click(object sender, EventArgs e)
         {
-            programsUnpack("TES5LODGEN.rar");
+            programsUnpack("TES5LODGEN");
         }
         private void programsUnpack(string FileName)
         {
             FuncMisc.toggleButtons(this, false);
-            FuncMisc.unpackRAR(FormMain.pathProgramFilesFolder + FileName);
+            FuncMisc.unpackRAR(FormMain.pathProgramFilesFolder + FileName, true);
             FuncMisc.toggleButtons(this, true);
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //

@@ -51,9 +51,12 @@ namespace SLMPLauncher
         {
             if (Directory.Exists(FormMain.pathModsFolder))
             {
-                foreach (string line in Directory.EnumerateFiles(FormMain.pathModsFolder, "*.rar"))
+                foreach (string line in Directory.EnumerateFiles(FormMain.pathModsFolder))
                 {
-                    listBox1.Items.Add(Path.GetFileName(line));
+                    if (FormMain.archiveExt.Exists(s => s.Equals(Path.GetExtension(line), StringComparison.OrdinalIgnoreCase)))
+                    {
+                        listBox1.Items.Add(Path.GetFileName(line));
+                    }
                 }
             }
         }
@@ -77,7 +80,7 @@ namespace SLMPLauncher
         {
             FuncMisc.toggleButtons(this, false);
             listBox1.Enabled = false;
-            FuncMisc.unpackRAR(FormMain.pathModsFolder + filename);
+            FuncMisc.unpackRAR(FormMain.pathModsFolder + filename, false);
             FuncMisc.toggleButtons(this, true);
             listBox1.Enabled = true;
         }
@@ -88,7 +91,7 @@ namespace SLMPLauncher
             {
                 if (FuncMisc.dialogResult(textDeleteMod))
                 {
-                    string file = FormMain.pathModsFolder + listBox1.SelectedItem.ToString().Replace(".rar", ".txt");
+                    string file = FormMain.pathModsFolder + Path.GetFileNameWithoutExtension(FormMain.pathModsFolder + listBox1.SelectedItem.ToString()) + ".txt";
                     if (File.Exists(file))
                     {
                         foreach (string line in File.ReadLines(file))
@@ -104,7 +107,7 @@ namespace SLMPLauncher
                         }
                         if (FuncParser.keyExists(file, "UNINSTALL", "UNPACK"))
                         {
-                            FuncMisc.unpackRAR(FormMain.pathGameFolder + FuncParser.stringRead(file, "UNINSTALL", "UNPACK"));
+                            FuncMisc.unpackRAR(FormMain.pathGameFolder + FuncParser.stringRead(file, "UNINSTALL", "UNPACK"), true);
                         }
                     }
                     else

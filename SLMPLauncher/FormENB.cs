@@ -104,9 +104,12 @@ namespace SLMPLauncher
         {
             if (Directory.Exists(FormMain.pathENBFolder))
             {
-                foreach (string line in Directory.EnumerateFiles(FormMain.pathENBFolder, "*.rar"))
+                foreach (string line in Directory.EnumerateFiles(FormMain.pathENBFolder))
                 {
-                    listBox1.Items.Add(Path.GetFileName(line));
+                    if (FormMain.archiveExt.Exists(s => s.Equals(Path.GetExtension(line), StringComparison.OrdinalIgnoreCase)))
+                    {
+                        listBox1.Items.Add(Path.GetFileName(line));
+                    }
                 }
                 string last = FuncParser.stringRead(FormMain.pathLauncherINI, "ENB", "LastPreset");
                 if (last != null && listBox1.Items.Contains(last))
@@ -132,7 +135,7 @@ namespace SLMPLauncher
                 FuncMisc.refreshButton(button_TAA, "", "", "", null, false);
                 if (!File.Exists(FormMain.pathDataFolder + "GameText9.bsa"))
                 {
-                    FuncMisc.unpackRAR(FormMain.pathSystemFolder + "GameText9.rar");
+                    FuncMisc.unpackRAR(FormMain.pathSystemFolder + "GameText9", true);
                 }
             }
             else
@@ -159,7 +162,7 @@ namespace SLMPLauncher
                 FuncMisc.toggleButtons(this, false);
                 listBox1.Enabled = false;
                 FuncClear.removeENB();
-                FuncMisc.unpackRAR(FormMain.pathENBFolder + listBox1.SelectedItem.ToString());
+                FuncMisc.unpackRAR(FormMain.pathENBFolder + listBox1.SelectedItem.ToString(), false);
                 FuncParser.iniWrite(FormMain.pathLauncherINI, "ENB", "LastPreset", listBox1.SelectedItem.ToString());
                 FuncParser.iniWrite(FormMain.pathENBLocalINI, "MEMORY", "VideoMemorySizeMb", FuncParser.stringRead(FormMain.pathLauncherINI, "ENB", "MemorySizeMb"));
                 listBox1.Enabled = true;

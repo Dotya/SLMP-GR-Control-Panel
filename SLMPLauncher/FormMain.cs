@@ -12,6 +12,7 @@ namespace SLMPLauncher
 {
     public partial class FormMain : Form
     {
+        public static List<string> archiveExt = new List<string>() { ".rar", ".7z", ".zip", ".zipx" };
         public static string pathLauncherExecuting = Process.GetCurrentProcess().MainModule.FileName;
         public static string pathLauncherFolder = FuncFiles.pathAddSlash(Path.GetDirectoryName(pathLauncherExecuting));
         public static string pathGameFolder = FuncFiles.pathAddSlash(Path.GetFullPath(pathLauncherFolder + @"..\"));
@@ -42,14 +43,15 @@ namespace SLMPLauncher
         public static string textCouldWriteFile = null;
         public static string textFailedCopy = null;
         public static string textFailedCreate = null;
+        public static string textNotFound = null;
         public static int argsWaitBefore = 0;
         public static int gameDirLength = pathGameFolder.Length;
         public static int maxFPS = 60;
         public static int numberStyle = 1;
         public static int settingsPreset = 2;
+        public static int updatesExt = 1;
         internal static FormMain formMain = null;
         public static FontStyle customFontStyle = FontStyle.Regular;
-        public static string pathFNISRAR = pathSystemFolder + "FNIS.rar";
         string pathFNIS = pathDataFolder + @"Tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe";
         string pathDSR = pathDataFolder + @"SkyProc Patchers\Dual Sheath Redux Patch\Dual Sheath Redux Patch.jar";
         string pathHelp = pathProgramFilesFolder + "SLMP-GR Help.chm";
@@ -58,13 +60,11 @@ namespace SLMPLauncher
         string registryKey = "Installed Path";
         string textClearDirectory = null;
         string textNoInIFound = null;
-        string textNotFound = null;
         string textNotInDirectory = null;
         string textRegistryFail = null;
         string textSetSettings = null;
         string textSetSettingsFail = null;
         string textSettingsReset = null;
-        string textUnPackFNIS = null;
         string textUseStandart = null;
         string[] typeSettings = null;
         int mouseWindowX = 0;
@@ -187,6 +187,11 @@ namespace SLMPLauncher
                     }
                     ifc = null;
                 }
+                updatesExt = FuncParser.intRead(pathLauncherINI, "Updates", "updatesExt");
+                if (updatesExt < 0 || updatesExt > 3)
+                {
+                    updatesExt = 1;
+                }
             }
             else
             {
@@ -261,7 +266,9 @@ namespace SLMPLauncher
                 "   Trebuchet MS",
                 "",
                 "[Updates]",
-                "UpdateHost=http://www.slmp.ru/_SLMP-GR/2.9/" });
+                "UpdateHost=http://www.slmp.ru/_SLMP-GR/3.0/",
+                "Files extension index: .rar, .7z, .zip, .zipx",
+                "updatesExt=1" });
             }
             else
             {
@@ -319,13 +326,6 @@ namespace SLMPLauncher
             label1.Focus();
             if (File.Exists(pathFNIS))
             {
-                if (File.Exists(pathFNISRAR))
-                {
-                    if (FuncMisc.dialogResult(textUnPackFNIS))
-                    {
-                        FuncMisc.unpackRAR(pathFNISRAR);
-                    }
-                }
                 pressedButtonEvent(button_FNIS, BMbuttonHalfPressed, button_Half_MouseEnter, button_Half_MouseLeave);
                 FuncMisc.runProcess(pathFNIS, null, closeFNIS, this, false, false);
             }
@@ -753,7 +753,6 @@ namespace SLMPLauncher
             textSetSettings = " настройки установлены.";
             textSetSettingsFail = "Не удалось сбросить настройки. Проверьте права доступа к ini файлам в: " + Environment.NewLine + pathMyDoc;
             textSettingsReset = "Сбросить настройки?";
-            textUnPackFNIS = "Распаковать стандартные файлы FNIS из архива:" + Environment.NewLine + pathFNISRAR;
             textUseStandart = "Будут использованы стандартные шаблоны настроек т.к. не найден файл: " + Environment.NewLine;
             toolTip1.SetToolTip(button_AddIgnoreFiles, "Добавление файла(ов) в шаблон игнор листа.");
             toolTip1.SetToolTip(button_AddIgnoreFolder, "Добавление папки в шаблон игнор листа.");
@@ -799,7 +798,6 @@ namespace SLMPLauncher
             textSetSettings = " settings are set.";
             textSetSettingsFail = "Failed to reset settings. Check permissions for ini files in: " + Environment.NewLine + pathMyDoc;
             textSettingsReset = "Reset settings?";
-            textUnPackFNIS = "Unpack the standard FNIS files from the archive:" + Environment.NewLine + pathFNISRAR;
             textUseStandart = "Standard templates of settings will be used because file not found: " + Environment.NewLine;
             toolTip1.SetToolTip(button_AddIgnoreFiles, "Adding a file(s) to the ignore list template.");
             toolTip1.SetToolTip(button_AddIgnoreFolder, "Adding a folder to the ignore list template.");

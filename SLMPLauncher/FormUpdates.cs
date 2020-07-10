@@ -29,6 +29,7 @@ namespace SLMPLauncher
         string textStop = "Стоп";
         string textUpdate = "Обновить";
         string textWrongPing = "Нет доступа к: ";
+        string textUpdateExt = FormMain.archiveExt[FormMain.updatesExt];
         bool stopDownload = false;
         bool updateInstall = false;
         bool updatesCPFound = false;
@@ -148,8 +149,8 @@ namespace SLMPLauncher
                         }
                         else
                         {
-                            FuncFiles.deleteAny(pathUpdateFolder + "file" + numberSelectFile + ".rar");
-                            downloadFileName = "file" + numberSelectFile + ".rar";
+                            FuncFiles.deleteAny(pathUpdateFolder + "file" + numberSelectFile + textUpdateExt);
+                            downloadFileName = "file" + numberSelectFile + textUpdateExt;
                             downloadFileType = "UpdateG";
                             client_DownloadProgressStart();
                         }
@@ -380,9 +381,9 @@ namespace SLMPLauncher
 
         private bool checkUpdateFile(bool fromDL)
         {
-            if (File.Exists(pathUpdateFolder + "file" + numberSelectFile + ".rar") && File.Exists(pathUpdateFolder + nameUpdateInfo) && File.Exists(FormMain.pathLauncherFolder + "UnRAR.exe"))
+            if (File.Exists(pathUpdateFolder + "file" + numberSelectFile + textUpdateExt) && File.Exists(pathUpdateFolder + nameUpdateInfo) && File.Exists(FormMain.pathLauncherFolder + "UnRAR.exe"))
             {
-                if (new FileInfo(pathUpdateFolder + "file" + numberSelectFile + ".rar").Length == FuncParser.intRead(pathUpdateFolder + nameUpdateInfo, "Update_" + numberSelectFile, "update_file_filesize"))
+                if (new FileInfo(pathUpdateFolder + "file" + numberSelectFile + textUpdateExt).Length == FuncParser.intRead(pathUpdateFolder + nameUpdateInfo, "Update_" + numberSelectFile, "update_file_filesize"))
                 {
                     return true;
                 }
@@ -392,7 +393,7 @@ namespace SLMPLauncher
                     {
                         MessageBox.Show(textNoSyncWithUI);
                     }
-                    FuncFiles.deleteAny(pathUpdateFolder + "file" + numberSelectFile + ".rar");
+                    FuncFiles.deleteAny(pathUpdateFolder + "file" + numberSelectFile + textUpdateExt);
                 }
             }
             else
@@ -417,7 +418,7 @@ namespace SLMPLauncher
                     break;
                 }
             }
-            FuncMisc.unpackRAR(pathUpdateFolder + "file" + numberSelectFile + ".rar");
+            FuncMisc.unpackRAR(pathUpdateFolder + "file" + numberSelectFile + textUpdateExt, false);
             FuncParser.iniWrite(FormMain.pathLauncherINI, "Updates", "Update_" + numberSelectFile + "_Version", FuncParser.stringRead(pathUpdateFolder + nameUpdateInfo, "Update_" + numberSelectFile, "update_file_version"));
             comboBox_Updates_SelectedIndexChanged(this, new EventArgs());
             if (readyDL)

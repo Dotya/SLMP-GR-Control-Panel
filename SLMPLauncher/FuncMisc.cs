@@ -226,11 +226,11 @@ namespace SLMPLauncher
             {
                 if (File.Exists(FormMain.pathDataFolder + "Frostfall.esp") && (!File.Exists(FormMain.pathDataFolder + "Frostfall-WS.esp") || !File.Exists(FormMain.pathDataFolder + "Frostfall-WS.bsa")))
                 {
-                    unpackRAR(FormMain.pathSystemFolder + "AR(4)FF.rar");
+                    unpackRAR(FormMain.pathSystemFolder + "AR(4)FF", true);
                 }
                 if (File.Exists(FormMain.pathDataFolder + "DisableFastTravel.bsa") && new FileInfo(FormMain.pathDataFolder + "DisableFastTravel.bsa").Length != 45717)
                 {
-                    unpackRAR(FormMain.pathSystemFolder + "AR(4)DFT.rar");
+                    unpackRAR(FormMain.pathSystemFolder + "AR(4)DFT", true);
                 }
             }
             else
@@ -239,13 +239,24 @@ namespace SLMPLauncher
                 FuncFiles.deleteAny(FormMain.pathDataFolder + "Frostfall-WS.bsa");
                 if (File.Exists(FormMain.pathDataFolder + "DisableFastTravel.bsa") && new FileInfo(FormMain.pathDataFolder + "DisableFastTravel.bsa").Length != 45701)
                 {
-                    unpackRAR(FormMain.pathModsFolder + "DisableFastTravel.rar");
+                    unpackRAR(FormMain.pathModsFolder + "DisableFastTravel", true);
                 }
             }
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
-        public static void unpackRAR(string path)
+        public static void unpackRAR(string path, bool noext)
         {
+            if (noext)
+            {
+                foreach (string line in FormMain.archiveExt)
+                {
+                    if (File.Exists(path + line))
+                    {
+                        path = path + line;
+                        break;
+                    }
+                }
+            }
             if (File.Exists(path) && File.Exists(FormMain.pathLauncherFolder + "UnRAR.exe"))
             {
                 runProcess(FormMain.pathLauncherFolder + "UnRAR.exe", " x -y \"" + path + "\"" + " " + "\"" + FormMain.pathGameFolder + "\"", null, null, true, true);
