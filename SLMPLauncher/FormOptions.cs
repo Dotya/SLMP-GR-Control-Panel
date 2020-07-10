@@ -606,7 +606,7 @@ namespace SLMPLauncher
                     {
                         if (arOld != i)
                         {
-                            FuncMisc.unpackRAR(FormMain.pathSystemFolder + "AR(" + i.ToString() + ")", true);
+                            FuncMisc.unpackArhive(FormMain.pathSystemFolder + "AR(" + i.ToString() + ")", true);
                             FuncParser.iniWrite(FormMain.pathLauncherINI, "General", "AspectRatio", i.ToString());
                             FuncMisc.wideScreenMods();
                         }

@@ -226,11 +226,11 @@ namespace SLMPLauncher
             {
                 if (File.Exists(FormMain.pathDataFolder + "Frostfall.esp") && (!File.Exists(FormMain.pathDataFolder + "Frostfall-WS.esp") || !File.Exists(FormMain.pathDataFolder + "Frostfall-WS.bsa")))
                 {
-                    unpackRAR(FormMain.pathSystemFolder + "AR(4)FF", true);
+                    unpackArhive(FormMain.pathSystemFolder + "AR(4)FF", true);
                 }
                 if (File.Exists(FormMain.pathDataFolder + "DisableFastTravel.bsa") && new FileInfo(FormMain.pathDataFolder + "DisableFastTravel.bsa").Length != 45717)
                 {
-                    unpackRAR(FormMain.pathSystemFolder + "AR(4)DFT", true);
+                    unpackArhive(FormMain.pathSystemFolder + "AR(4)DFT", true);
                 }
             }
             else
@@ -239,12 +239,12 @@ namespace SLMPLauncher
                 FuncFiles.deleteAny(FormMain.pathDataFolder + "Frostfall-WS.bsa");
                 if (File.Exists(FormMain.pathDataFolder + "DisableFastTravel.bsa") && new FileInfo(FormMain.pathDataFolder + "DisableFastTravel.bsa").Length != 45701)
                 {
-                    unpackRAR(FormMain.pathModsFolder + "DisableFastTravel", true);
+                    unpackArhive(FormMain.pathModsFolder + "DisableFastTravel", true);
                 }
             }
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
-        public static void unpackRAR(string path, bool noext)
+        public static void unpackArhive(string path, bool noext)
         {
             if (noext)
             {
@@ -257,9 +257,9 @@ namespace SLMPLauncher
                     }
                 }
             }
-            if (File.Exists(path) && File.Exists(FormMain.pathLauncherFolder + "UnRAR.exe"))
+            if (File.Exists(path) && File.Exists(FormMain.pathLauncherFolder + "7z.exe"))
             {
-                runProcess(FormMain.pathLauncherFolder + "UnRAR.exe", " x -y \"" + path + "\"" + " " + "\"" + FormMain.pathGameFolder + "\"", null, null, true, true);
+                runProcess(FormMain.pathLauncherFolder + "7z.exe", " x -y \"" + path + "\"" + " " + "-o\"" + FormMain.pathGameFolder + "\"", null, null, true, true);
             }
             else
             {

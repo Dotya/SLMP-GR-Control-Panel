@@ -52,7 +52,7 @@ namespace SLMPLauncher
         private void programsUnpack(string FileName)
         {
             FuncMisc.toggleButtons(this, false);
-            FuncMisc.unpackRAR(FormMain.pathProgramFilesFolder + FileName, true);
+            FuncMisc.unpackArhive(FormMain.pathProgramFilesFolder + FileName, true);
             FuncMisc.toggleButtons(this, true);
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //

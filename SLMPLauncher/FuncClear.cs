@@ -294,6 +294,7 @@ namespace SLMPLauncher
                 @"skyrim\customctrl.txt",
                 @"skyrim\enb",
                 @"skyrim\mods",
+                @"skyrim\7z.exe",
                 @"skyrim\plugins.txt",
                 @"skyrim\skyrim.ini",
                 @"skyrim\skyrimprefs.ini",
@@ -301,7 +302,6 @@ namespace SLMPLauncher
                 @"skyrim\slmplauncher.exe",
                 @"skyrim\slmplauncher.ini",
                 @"skyrim\system",
-                @"skyrim\unrar.exe",
                 @"steam_api.dll",
                 @"steam_rld.ini",
                 @"tesv.exe" });

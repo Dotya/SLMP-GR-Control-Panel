@@ -80,7 +80,7 @@ namespace SLMPLauncher
         {
             FuncMisc.toggleButtons(this, false);
             listBox1.Enabled = false;
-            FuncMisc.unpackRAR(FormMain.pathModsFolder + filename, false);
+            FuncMisc.unpackArhive(FormMain.pathModsFolder + filename, false);
             FuncMisc.toggleButtons(this, true);
             listBox1.Enabled = true;
         }
@@ -107,7 +107,7 @@ namespace SLMPLauncher
                         }
                         if (FuncParser.keyExists(file, "UNINSTALL", "UNPACK"))
                         {
-                            FuncMisc.unpackRAR(FormMain.pathGameFolder + FuncParser.stringRead(file, "UNINSTALL", "UNPACK"), true);
+                            FuncMisc.unpackArhive(FormMain.pathGameFolder + FuncParser.stringRead(file, "UNINSTALL", "UNPACK"), true);
                         }
                     }
                     else

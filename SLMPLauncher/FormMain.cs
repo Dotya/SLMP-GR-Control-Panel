@@ -742,7 +742,7 @@ namespace SLMPLauncher
             textCouldNotDelete = "Не удалось удалить: ";
             textCouldNotMove = "Не удалось переместить: ";
             textCouldRun = "Не удалось запустить файл: ";
-            textCouldUnpack = "Не найден UnRAR.exe или архив: ";
+            textCouldUnpack = "Не найден 7z.exe или архив: ";
             textCouldWriteFile = "Не удалось записать файл: ";
             textFailedCopy = "Не удалось скопировать: ";
             textFailedCreate = "Не удалось создать папку: ";
@@ -787,7 +787,7 @@ namespace SLMPLauncher
             textCouldNotDelete = "Could not delete: ";
             textCouldNotMove = "Failed to move: ";
             textCouldRun = "Could not launch file: ";
-            textCouldUnpack = "UnRAR.exe not found or arhive: ";
+            textCouldUnpack = "7z.exe not found or arhive: ";
             textCouldWriteFile = "Could not write file: ";
             textFailedCopy = "Could not copy: ";
             textFailedCreate = "Could not create folder: ";

@@ -21,7 +21,7 @@ namespace SLMPLauncher
         string textContinue = "Продолжить?";
         string textInstalled = "Установлено";
         string textNoSyncWithUI = "Скачанный файл не соответствует UpdateInfo. Повторите попытку.";
-        string textNoTools = "Нет компонентов для установки обновления (файла обновления, UnRAR или UpdateInfo).";
+        string textNoTools = "Нет компонентов для установки обновления (файла обновления, 7z или UpdateInfo).";
         string textNoUpdate = "Нет обновлений";
         string textPleaseRead = "Пожалуйста прочтите предупреждение: ";
         string textRequiredVersion = "Вы должны сначала установить: ";
@@ -75,7 +75,7 @@ namespace SLMPLauncher
             textContinue = "Continue?";
             textInstalled = "Installed";
             textNoSyncWithUI = "The downloaded file does not correspond to UpdateInfo. Try again.";
-            textNoTools = "No components to install the update (update file, UnRAR or UpdateInfo).";
+            textNoTools = "No components to install the update (update file, 7z or UpdateInfo).";
             textNoUpdate = "No updates";
             textPleaseRead = "Please read notification: ";
             textRequiredVersion = "You must before install: ";
@@ -381,7 +381,7 @@ namespace SLMPLauncher
 
         private bool checkUpdateFile(bool fromDL)
         {
-            if (File.Exists(pathUpdateFolder + "file" + numberSelectFile + textUpdateExt) && File.Exists(pathUpdateFolder + nameUpdateInfo) && File.Exists(FormMain.pathLauncherFolder + "UnRAR.exe"))
+            if (File.Exists(pathUpdateFolder + "file" + numberSelectFile + textUpdateExt) && File.Exists(pathUpdateFolder + nameUpdateInfo) && File.Exists(FormMain.pathLauncherFolder + "7z.exe"))
             {
                 if (new FileInfo(pathUpdateFolder + "file" + numberSelectFile + textUpdateExt).Length == FuncParser.intRead(pathUpdateFolder + nameUpdateInfo, "Update_" + numberSelectFile, "update_file_filesize"))
                 {
@@ -418,7 +418,7 @@ namespace SLMPLauncher
                     break;
                 }
             }
-            FuncMisc.unpackRAR(pathUpdateFolder + "file" + numberSelectFile + textUpdateExt, false);
+            FuncMisc.unpackArhive(pathUpdateFolder + "file" + numberSelectFile + textUpdateExt, false);
             FuncParser.iniWrite(FormMain.pathLauncherINI, "Updates", "Update_" + numberSelectFile + "_Version", FuncParser.stringRead(pathUpdateFolder + nameUpdateInfo, "Update_" + numberSelectFile, "update_file_version"));
             comboBox_Updates_SelectedIndexChanged(this, new EventArgs());
             if (readyDL)
