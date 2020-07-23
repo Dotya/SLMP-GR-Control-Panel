@@ -124,24 +124,12 @@ namespace SLMPLauncher
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         public static int intRead(string path, string section, string key)
         {
-            int value = -1;
-            string line = stringRead(path, section, key);
-            if (!string.IsNullOrEmpty(line))
-            {
-                value = stringToInt(line);
-            }
-            return value;
+            return stringToInt(stringRead(path, section, key));
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         public static double doubleRead(string path, string section, string key)
         {
-            double value = -1.0;
-            string line = stringRead(path, section, key);
-            if (!string.IsNullOrEmpty(line))
-            {
-                value = stringToDouble(line);
-            }
-            return value;
+            return stringToDouble(stringRead(path, section, key));
         }
         // ------------------------------------------------ BORDER OF FUNCTION ---------------------------------------------------------- //
         public static bool readAsBool(string path, string section, string key)

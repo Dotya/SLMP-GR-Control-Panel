@@ -266,7 +266,7 @@ namespace SLMPLauncher
                 @"data\tools\generatefnis_for_users\patchlist.txt",
                 @"data\tools\generatefnis_for_users\templates",
                 @"data\tools\generatefnis_for_users\temporary_logs",
-                @"data\tools\generatefnis_for_users\temporary_logs\.logs.txt",
+                @"data\tools\generatefnis_for_users\temporary_logs\.temporary_logs.txt",
                 @"data\uiextensions.bsa",
                 @"data\uiextensions.esp",
                 @"data\unofficial skyrim legendary edition patch.bsa",
